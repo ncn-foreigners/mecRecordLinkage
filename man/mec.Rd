@@ -10,7 +10,6 @@ mec(
   vars,
   g,
   blockvars = NULL,
-  string_comparator = FALSE,
   error_rate = FALSE,
   control = control_mec()
 )
@@ -21,7 +20,6 @@ mec(
   vars,
   g,
   blockvars = NULL,
-  string_comparator = FALSE,
   error_rate = FALSE,
   control = control_mec()
 )
@@ -36,8 +34,6 @@ mec(
 \item{g}{- a}
 
 \item{blockvars}{- the variables defining the blocks or strata for which all pairs of x and y will be generated.}
-
-\item{string_comparator}{- a}
 
 \item{error_rate}{- if `TRUE` estimation guided by errors rate is generated}
 

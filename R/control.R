@@ -1,11 +1,24 @@
+#' Title
+#'
+#' @param comp_rate - a
+#' @param deduplication - a
+#' @param add_xy - a
+#' @param maxit - a
+#' @param eps - a
+#' @param theta_est - a
+#' @param target_flr - a
+#' @param treshold - a
+#' @param theta_start - a
+#'
+#' @export
 control_mec <- function(comp_rate = .9,
                         deduplication = FALSE,
                         add_xy = TRUE,
                         maxit = 100,
-                        eps = 1e-6,
+                        eps = 1e-3,
                         theta_est = "1",
-                        target_flr = .01,
-                        treshold = 1,
+                        target_flr = .05,
+                        treshold = 1, # to consider
                         theta_start = .5){
 
 

@@ -40,15 +40,18 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
 
   g_start <- ifelse(apply(Omega, 1, all), 1, 0)
   nM_start <- sum(g_start)
-  print(nM_start)
   u_loc = which(g_start==0)
   m_loc = which(g_start==1)
+
   eta <- params_formula(Omega, n)
   u_gamma <- gamma_formula(eta, subset(gamma, select = c(-n)))
   u_gamma_omega <- gamma_formula(eta, Omega)
-  M_start <- Omega[m_loc,]
+  M_start <- Omega[m_loc, ]
 
   if (!error_rate) {
+    if (nM_start == 0) {
+      stop("There is no records with all agreements on the key variables. Please provide relevant datasets.")
+    }
     it <- 0
     while(TRUE) {
       it <- it + 1
@@ -57,10 +60,10 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
       r_gamma <- m_gamma/u_gamma
 
       nM_prev <- nM_start
-      nM <- round(nMformula(gamma = gamma, r_gamma = r_gamma, n = n, nM = nM_start))
+      nM <- nMformula(gamma = gamma, r_gamma = r_gamma, n = n, nM = nM_start)
 
       pairs$r <- gamma_formula(theta_start, Omega)/u_gamma_omega
-      pairs_ord <- pairs[order(-pairs$r),]
+      pairs_ord <- pairs[order(-pairs$r), ]
       M <- pairs_ord[1:nM, ]
       U <- pairs_ord[-c(1:nM), ]
 
@@ -70,21 +73,19 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
       if (theta_est == "1") {
         theta <- params_formula(M_start, nM_start)
       } else if (theta_est == "2") {
-        g_gamma <- nM*pairs$r/(nM * (pairs$r - 1) + n)
-        theta <- params_formula_theta(Omega, nM, g_gamma)
+        g_gamma <- sapply(nM_prev*pairs$r/(nM_prev * (pairs$r - 1) + n), function(x) min(x, 1)) # problem here
+        theta <- params_formula_theta(Omega, nM_start, g_gamma)
       }
 
 
       ##############
       if (sqrt(sum((theta - theta_start)^2)) < eps) break;
-      if (nM_start == nM_prev) break;
+      if (round(nM_start) == round(nM_prev)) break;
       theta_start <- theta
     }
   } else {
-
-    treshold <- treshold
-    it <- 0
     nM_prev <- 0
+    it <- 0
     while(TRUE) {
       it <- it + 1
 
@@ -98,7 +99,7 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
       r_gamma2 <- gamma_formula(theta_start, subset(gamma, select = c(-n)))/u_gamma
       nM2 <- nMformula(gamma = gamma, r_gamma = r_gamma2, n = n, nM = nM)
 
-      g_gamma <- nM*M$r/(nM * (M$r - 1) + n)
+      g_gamma <- sapply(nM*M$r/(nM * (M$r - 1) + n), function(x) min(c(x, 1)))
       flr <- error_rate(nM, g_gamma)$flr
       mmr <- error_rate(nM2, g_gamma)$mmr
 
@@ -107,19 +108,19 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
       if (theta_est == "1") {
         theta <- params_formula(M_start, nM)
       } else if (theta_est == "2") {
-        g_gamma <- nM*pairs$r/(nM * (pairs$r - 1) + n)
+        g_gamma <- sapply(nM*pairs$r/(nM * (pairs$r - 1) + n), function(x) min(x, 1))
         theta <- params_formula_theta(Omega, nM2, g_gamma)
       }
 
       if (flr > target_flr) {
-        treshold <- treshold + .5
+        treshold <- treshold + 4 # to consider
       } else {
-        treshold <- treshold - .5
+        treshold <- treshold - 4
       }
 
       ##############
-      if (sum(abs(theta - theta_start)) < eps) break;
-      if (nM2 == nM_prev) break;
+      if (sqrt(sum((theta - theta_start)^2)) < eps) break;
+      if (round(nM2) == round(nM_prev)) break;
 
       theta_start <- theta
       nM_prev <- nM2
@@ -130,8 +131,8 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
   class_entropy <- class_entropy(nM, M$r)
   M$selected <- TRUE
   U$selected <- FALSE
-  UM <- rbind(M, U)
-  linked_data <- reclin2::link(subset(UM, select = c(-r)), selection = "selected", all = FALSE)
+  to_link <- rbind(M, U)
+  linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = FALSE)
 
   list(theta = theta,
        eta = eta,

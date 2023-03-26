@@ -20,15 +20,15 @@ library:
 
 ## Introduction
 
-The goal of the main function `mec` available in the package is to link these sets using maximum entropy classifier. Combining different sources of data is widely using step in order to make an data analysis. Many various techniques have been considering during the years so as to link the records base on a comparison vectors and calculates m- and u- probabilities. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. Using `glm` with `binomial` or `xgboost` are one of the proposed methods. Here pairs matching is a classification problem as well, but matching process is more automated in comparison to probabilistic method. MEC technique was proposed by D. Lee, L. C. Zhang and J. K. Kim "Maximum entropy classification for record linkage" (2022). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First of all record linkage using `mec` depending on the estimation techniques will be performed. Then we compare results with the `reclin2` package. In contrast to `reclin2` package, there is one function to prepare data sets, create comparison vectors using `reclin2` package, obtain parameters and link record.
+The goal of the main function `mec` available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim "Maximum entropy classification for record linkage" (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction how to use package properly and then we compare obtained results with the `reclin2` package.
 
 ## Technical details
 
-With record linkage we try to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called `comparison space` $\Omega=A \times B=M \cup U$ consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio
+With record linkage we are trying to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called `comparison space` $\Omega=A \times B=M \cup U$ consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio
 
 $$
 r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
-$$ where $m\left(\gamma\right)$ and $u\left(\gamma\right)$ are the probability mass functions for M and U set directly. In maximum entropy classification we classifiy each pair of records to these sets depending of the $r$ value. We consider several ways to estimate probability ratio. Let $\quad g_{a b}=1$ if $\quad(a, b) \in M \quad$ and $0$ if $\quad(a, b) \in U$. In the first setting we can create a model of $m\left(\gamma\right)$ by $m(\gamma ; \boldsymbol{\theta})=\prod_{k=1}^K \theta_k^{\gamma_k}\left(1-\theta_k\right)^{1-\gamma_k}$. where $\theta_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=1\right)$, and $\gamma_{a b, k}$ is the $k^{\text {th }}$ component of $\gamma_{a b}$. $u(\gamma ; \xi)$ can be modeled as above with parameters $\xi_k$ instead of $\theta_k$, where $\xi_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=0\right)$. The goal in the MEC method is to find the set of pairs that maximize the entropy function. There is different possibilities for estimating required parameters. One the one hand we can use number of agreements (non-agreements) on the key variables, on the other hand maximum likelihood method is considering as well. In the default setting we have
+$$ where $m\left(\gamma\right)$ and $u\left(\gamma\right)$ are the probability mass functions for M and U set directly. In maximum entropy classification we classify each pair of records to these sets depending of the $r$ value. We consider several ways to estimate probability ratio. Let $\quad g_{a b}=1$ if $\quad(a, b) \in M \quad$ and $0$ if $\quad(a, b) \in U$. In the first setting we can create a model of $m\left(\gamma\right)$ by $m(\gamma ; \boldsymbol{\theta})=\prod_{k=1}^K \theta_k^{\gamma_k}\left(1-\theta_k\right)^{1-\gamma_k}$. where $\theta_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=1\right)$, and $\gamma_{a b, k}$ is the $k^{\text {th }}$ component of $\gamma_{a b}$. $u(\gamma ; \xi)$ can be modeled as above with parameters $\xi_k$ instead of $\theta_k$, where $\xi_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=0\right)$. The goal in the MEC method is to find the set of pairs that maximize the entropy function. There is different possibilities for estimating required parameters. One the one hand we can use number of agreements (non-agreements) on the key variables, on the other hand maximum likelihood method is considering as well. In the default setting we have
 
 $$\theta_k^{(t)}=\frac{1}{\left|M^{(t)}\right|} \sum_{(a, b) \in \Omega} g_{a b}^{(t)} \mathbb{I}\left(\gamma_{a b, k}=1\right)$$
 
@@ -40,37 +40,44 @@ For $\xi_k$ estimation we consider rate agreements from all the pairs in $\Omega
 
 $$\hat{\xi}_k=\frac{1}{n} \sum_{(a, b) \in \Omega} \mathbb{I}\left(\gamma_{(a b, k)}=1\right)$$
 
-MEC for record linkage should generally be guided by the error rates, false link rate (FLR) and missing match rate (MMR), for whose bisection procedure by a threshold value is derived. Errors are defining as follows
-
-$$\psi=\frac{1}{|\hat{M}|} \sum_{(a, b) \in \hat{M}}\left(1-g_{a b}\right)$$
-
-$$\tau=1-\frac{1}{n_M} \sum_{(a, b) \in \hat{M}} g_{a b}$$
-
-for FLR and MMR respectively.
-
 ## MEC for unsupervised learning - iterative algorithm
 
 One can divide maximum entropy classification into two machine learning techniques - supervised and unsupervised learning. The second method provides iterative algorithm to obtain terminal result. D. Lee, L. C. Zhang and J. K. Kim propose following procedure.
 
 1.  set $\boldsymbol{\theta}^{(0)}=\left(\theta_1^{(0)}, \ldots, \theta_K^{(0)}\right)$ and $n_M^{(0)}=\left|M_1\right|$ , where $M_1$ is the maximal MEC set (only consists of the record pairs with perfect agreement of all the key variables).
-2.  For the i-th iteration let $g_{a b}^{(t)}=1$ if $(a, b) \in M^{(t)}$, and 0 otherwise.
+2.  For the t-th iteration let $g_{a b}^{(t)}=1$ if $(a, b) \in M^{(t)}$, and 0 otherwise.
 
-```{=html}
 <!-- -->
-```
+
 i)  update $u\left(\gamma ; \xi^{(t)}\right)$ and $m(\gamma ; \theta^{(t)})$, given $\mathbf{g}^{(t)}=\left\{g_{a b}^{(t)}:(a, b) \in \Omega\right\}$, using one of the estimation methods described above. Once $\boldsymbol{\theta}^{(t)}$ and $\xi^{(t)}$ are obtained, we can update $n_M^{(t)}=\sum_\gamma n(\gamma) \hat{g}^{(t)}(\gamma)$, where $$
     \hat{g}^{(t)}(\gamma) \equiv \hat{g}\left(\gamma ; \boldsymbol{\theta}^{(t)}, \xi^{(t)}\right)=\min \left\{\frac{\left|M^{(t)}\right| r^{(t)}(\gamma)}{\left|M^{(t)}\right|\left(r^{(t)}(\gamma)-1\right)+n}, 1\right\}
     $$ and $r^{(t)}(\gamma)$ is a probability ratio for current setting.
-ii) For given $n_{M}^{(t+1)}$ we find the maximal entropy classification set $M^{(t+1)} = =\left\{(a, b) \in \Omega: g_{a b}^{(t+1)}=1\right\}$ such that $\left|M^{(t+1)}\right|=n_M^{(t)}$ by deduplication in the descending order of probablity ratio over $\Omega$. It maximizes the entropy function.
+ii) For given $n_{M}^{(t)}$ we find the maximal entropy classification set $M^{(t+1)} = =\left\{(a, b) \in \Omega: g_{a b}^{(t+1)}=1\right\}$ such that $\left|M^{(t+1)}\right|=n_M^{(t)}$ by deduplication in the descending order of probability ratio over $\Omega$. It maximizes the entropy function.
 
-```{=html}
 <!-- -->
-```
+
 3.  Iterate until $n_M^{(t)}=n_M^{(t+1)}$ or $\left\|\boldsymbol{\theta}^{(t)}-\boldsymbol{\theta}^{(t+1)}\right\|<\epsilon$.
+
+## Bisection procedure for MEC guided by the error rates
+
+MEC for record linkage should generally be guided by the error rates - false link rate (FLR) and missing match rate (MMR), for whose bisection procedure by a threshold value is derived. Errors are defining as follows
+
+$$\psi=\frac{1}{|\hat{M}|} \sum_{(a, b) \in \hat{M}}\left(1-g_{a b}\right)$$
+
+$$\tau=1-\frac{1}{n_M} \sum_{(a, b) \in \hat{M}} g_{a b}$$for FLR and MMR respectively. With the guiding algorithm be the error rates we can add following points to the performed procedure.
+
+2.  Let $\psi$ be the target FLR
+
+<!-- -->
+
+i)  Choose a threshold value $c$ and form the corresponding MEC set $\hat{M_c}$, where $\hat{r}_{ab} \ge c$ for any $(a,b) \in \hat{M_c}$.
+ii) Calculate the estimated FLR and MMR of the resulting set $\hat{M_c}$. if $\hat{\psi} \ge \psi$ then increase $c$, otherwise reduce $c$.
+
+Iteration between these two stops would eventually lead to the value $c$ that makes $\hat{\psi}$ as close as possible to the target $\psi$.
 
 ## Package installation and loading
 
-In order to use `mecRecordLinkage` package effectively there is no need to install or load additional packages. All functionalities are build in. To prepare datasets properly using`reclin2` packages is proposed inside of the `mecRecordLinkage`.
+No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets, using `reclin2` packages is proposed inside of the `mecRecordLinkage`, what is the only dependency in the library.
 
 ```{r setup, echo=FALSE}
 devtools::load_all()
@@ -80,7 +87,7 @@ devtools::load_all()
 
 ## Work with example datasets and initial exploration
 
-To perform example of using `mec` function we can use following data sets. Data are obtained from https://github.com/djvanderlaan/tutorial-reclin-uros2021 and contain columns with the most important attributes like first name, last name or sex related to a given person (for more see documentation).
+To perform example of using `mec` function we can use following data sets. Data are obtained from the [reclin tutorial](https://github.com/djvanderlaan/tutorial-reclin-uros2021) and contain columns with the most important attributes such as first name, last name or sex related to a given person (for more see documentation).
 
 ```{r}
 data1 <- read.csv("data/example1.csv", stringsAsFactors = FALSE)
@@ -91,16 +98,14 @@ head(data2)
 
 ## Unsupervised learning using `mec` function
 
-`mec` Function enables to use unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is strata.
+`mec` Function enables the application of an unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is a strata.
 
 ```{r}
 vars <- c("firstname", "lastname", "sex", "dobday", "dobmon")
 model <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear")
 ```
 
-Let's look at the return of the model.
-
-Parameters of the model
+Let's look at the list of the model parameters.
 
 ```{r}
 model$theta # for m-probability
@@ -109,13 +114,13 @@ model$matching_prob # Expected value of being in the M set
 model$class_entropy # value of the entropy function for the final result
 ```
 
-Model returns M set, its size and linked datasets as well.
+Set of matching pairs.
 
 ```{r}
 model$M
 ```
 
-Depending on the estimation method, results can be different. You can define that by yourself with the `control` parameter.
+Depending on the estimation method, results can be different. You can define the method with the `control` parameters.
 
 ```{r}
 model2 <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear", control = control_mec(theta_est = "2"))
@@ -130,13 +135,13 @@ model_ER1$M
 ```
 
 ```{r}
-#model_ER2 <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear", control = control_mec(theta_est = "2"), error_rate = TRUE)
-#model_ER2$M
+model_ER2 <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear", control = control_mec(theta_est = "2", increase_rate = .6), error_rate = TRUE)
+model_ER2$M
 ```
 
 ## Other packages for record linkage
 
-Let's compare it to the results for `reclin2` package, where `EM` algorithm is implemented.
+Let's compare it to the results for the `reclin2` package, where `EM` algorithm is implemented.
 
 ```{r}
 pairs <- reclin2::pair_blocking(data1, data2, on = "dobyear")
@@ -152,9 +157,11 @@ pairs <- reclin2::select_n_to_m(pairs, "weights", variable = "ntom",
                                 threshold = 0)
 
 linked_data <- reclin2::link(pairs, selection = "ntom", all = FALSE)
+subset(pairs[pairs$threshold == TRUE, ], select = -c(weights, threshold, ntom))
+subset(pairs[pairs$ntom == TRUE, ],  select = -c(weights, threshold, ntom))
   
 ```
 
-Notice that this method requires defining threshold by the user, while in maximal MEC there is no need to define that, what makes this method more automated.
+Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.
 
 ## Supervised learning

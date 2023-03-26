@@ -26,7 +26,8 @@ params_formula_theta <- function(set, nM, g_gamma) {
 
   #par <- 1/nM * t(as.matrix(g_gamma)) %*% as.matrix(set)
   par <- 1/nM * apply(set, 2, function(x) sum(g_gamma * x))
-  as.vector(par)
+  names(par) <- names(set)
+  par
 }
 
 #params_formula_eta <- function(pi, nA, nB, )

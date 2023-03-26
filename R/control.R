@@ -19,6 +19,7 @@ control_mec <- function(comp_rate = .9,
                         theta_est = "1",
                         target_flr = .05,
                         treshold = 1, # to consider
+                        increase_rate = 4,
                         theta_start = .5){
 
 
@@ -30,5 +31,6 @@ control_mec <- function(comp_rate = .9,
        theta_est = theta_est,
        target_flr = target_flr,
        treshold = treshold,
+       increase_rate = increase_rate,
        theta_start = theta_start)
 }

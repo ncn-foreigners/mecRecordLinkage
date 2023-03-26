@@ -22,6 +22,7 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
   theta_est <- control$theta_est
   treshold <- control$treshold
   target_flr <- control$target_flr
+  increase_rate <- control$increase_rate
 
   if(is.null(blockvars)) {
     pairs <- reclin2::pair(A, B, deduplication = control$deduplication, add_xy = control$add_xy)
@@ -113,9 +114,9 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
       }
 
       if (flr > target_flr) {
-        treshold <- treshold + 4 # to consider
+        treshold <- treshold + increase_rate # to consider
       } else {
-        treshold <- treshold - 4
+        treshold <- treshold - increase_rate
       }
 
       ##############
@@ -142,7 +143,3 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
        linked_data = linked_data)
 
 }
-
-
-
-

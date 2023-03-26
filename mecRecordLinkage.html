@@ -2611,12 +2611,13 @@ vertical-align: -.125em;
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="toc-section-number">1</span>  Introduction</a></li>
   <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="toc-section-number">2</span>  Technical details</a></li>
   <li><a href="#mec-for-unsupervised-learning---iterative-algorithm" id="toc-mec-for-unsupervised-learning---iterative-algorithm" class="nav-link" data-scroll-target="#mec-for-unsupervised-learning---iterative-algorithm"><span class="toc-section-number">3</span>  MEC for unsupervised learning - iterative algorithm</a></li>
-  <li><a href="#package-installation-and-loading" id="toc-package-installation-and-loading" class="nav-link" data-scroll-target="#package-installation-and-loading"><span class="toc-section-number">4</span>  Package installation and loading</a></li>
-  <li><a href="#work-with-example-datasets-and-initial-exploration" id="toc-work-with-example-datasets-and-initial-exploration" class="nav-link" data-scroll-target="#work-with-example-datasets-and-initial-exploration"><span class="toc-section-number">5</span>  Work with example datasets and initial exploration</a></li>
-  <li><a href="#unsupervised-learning-using-mec-function" id="toc-unsupervised-learning-using-mec-function" class="nav-link" data-scroll-target="#unsupervised-learning-using-mec-function"><span class="toc-section-number">6</span>  Unsupervised learning using <code>mec</code> function</a></li>
-  <li><a href="#guiding-the-algorithm-by-the-error-rates" id="toc-guiding-the-algorithm-by-the-error-rates" class="nav-link" data-scroll-target="#guiding-the-algorithm-by-the-error-rates"><span class="toc-section-number">7</span>  Guiding the algorithm by the error rates</a></li>
-  <li><a href="#other-packages-for-record-linkage" id="toc-other-packages-for-record-linkage" class="nav-link" data-scroll-target="#other-packages-for-record-linkage"><span class="toc-section-number">8</span>  Other packages for record linkage</a></li>
-  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning"><span class="toc-section-number">9</span>  Supervised learning</a></li>
+  <li><a href="#bisection-procedure-for-mec-guided-by-the-error-rates" id="toc-bisection-procedure-for-mec-guided-by-the-error-rates" class="nav-link" data-scroll-target="#bisection-procedure-for-mec-guided-by-the-error-rates"><span class="toc-section-number">4</span>  Bisection procedure for MEC guided by the error rates</a></li>
+  <li><a href="#package-installation-and-loading" id="toc-package-installation-and-loading" class="nav-link" data-scroll-target="#package-installation-and-loading"><span class="toc-section-number">5</span>  Package installation and loading</a></li>
+  <li><a href="#work-with-example-datasets-and-initial-exploration" id="toc-work-with-example-datasets-and-initial-exploration" class="nav-link" data-scroll-target="#work-with-example-datasets-and-initial-exploration"><span class="toc-section-number">6</span>  Work with example datasets and initial exploration</a></li>
+  <li><a href="#unsupervised-learning-using-mec-function" id="toc-unsupervised-learning-using-mec-function" class="nav-link" data-scroll-target="#unsupervised-learning-using-mec-function"><span class="toc-section-number">7</span>  Unsupervised learning using <code>mec</code> function</a></li>
+  <li><a href="#guiding-the-algorithm-by-the-error-rates" id="toc-guiding-the-algorithm-by-the-error-rates" class="nav-link" data-scroll-target="#guiding-the-algorithm-by-the-error-rates"><span class="toc-section-number">8</span>  Guiding the algorithm by the error rates</a></li>
+  <li><a href="#other-packages-for-record-linkage" id="toc-other-packages-for-record-linkage" class="nav-link" data-scroll-target="#other-packages-for-record-linkage"><span class="toc-section-number">9</span>  Other packages for record linkage</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning"><span class="toc-section-number">10</span>  Supervised learning</a></li>
   </ul>
 </nav>
 </div>
@@ -2646,11 +2647,11 @@ vertical-align: -.125em;
 
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>The goal of the main function <code>mec</code> available in the package is to link these sets using maximum entropy classifier. Combining different sources of data is widely using step in order to make an data analysis. Many various techniques have been considering during the years so as to link the records base on a comparison vectors and calculates m- and u- probabilities. The most useful is probabilistic record linkage derived by <code>Fellegi and Sunter</code>, where parameters are estimated using <code>EM</code> algorithm (<code>Winkler</code>) (see <code>reclin2</code> package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. Using <code>glm</code> with <code>binomial</code> or <code>xgboost</code> are one of the proposed methods. Here pairs matching is a classification problem as well, but matching process is more automated in comparison to probabilistic method. MEC technique was proposed by D. Lee, L. C. Zhang and J. K. Kim “Maximum entropy classification for record linkage” (2022). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. <code>mecRecordLinkage</code> package contains direct implementation of the proposed algorithms. First of all record linkage using <code>mec</code> depending on the estimation techniques will be performed. Then we compare results with the <code>reclin2</code> package. In contrast to <code>reclin2</code> package, there is one function to prepare data sets, create comparison vectors using <code>reclin2</code> package, obtain parameters and link record.</p>
+<p>The goal of the main function <code>mec</code> available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in order to make an data analysis. Many various techniques have been considering during the years so as to link the records base on a comparison vectors and calculates m- and u- probabilities. The most useful is probabilistic record linkage derived by <code>Fellegi and Sunter</code>, where parameters are estimated using <code>EM</code> algorithm (<code>Winkler</code>) (see <code>reclin2</code> package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. You can use <code>glm</code> with <code>binomial</code> or <code>xgboost</code> to classify the pairs using proposed methods. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to probabilistic method. MEC technique was proposed by <a href="https://arxiv.org/abs/2009.14797">D. Lee, L. C. Zhang and J. K. Kim “Maximum entropy classification for record linkage” (2022)</a>. Authors derive supervised and unsupervised methods with full set parameters estimation techniques. <code>mecRecordLinkage</code> package contains direct implementation of the proposed algorithms. First we make an introduction how to use package properly and then we compare obtained results with the <code>reclin2</code> package.</p>
 </section>
 <section id="technical-details" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="technical-details"><span class="header-section-number">2</span> Technical details</h2>
-<p>With record linkage we try to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called <code>comparison space</code> <span class="math inline">\(\Omega=A \times B=M \cup U\)</span> consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio</p>
+<p>With record linkage we are trying to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called <code>comparison space</code> <span class="math inline">\(\Omega=A \times B=M \cup U\)</span> consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio</p>
 <p><span class="math display">\[
 r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 \]</span> where <span class="math inline">\(m\left(\gamma\right)\)</span> and <span class="math inline">\(u\left(\gamma\right)\)</span> are the probability mass functions for M and U set directly. In maximum entropy classification we classifiy each pair of records to these sets depending of the <span class="math inline">\(r\)</span> value. We consider several ways to estimate probability ratio. Let <span class="math inline">\(\quad g_{a b}=1\)</span> if <span class="math inline">\(\quad(a, b) \in M \quad\)</span> and <span class="math inline">\(0\)</span> if <span class="math inline">\(\quad(a, b) \in U\)</span>. In the first setting we can create a model of <span class="math inline">\(m\left(\gamma\right)\)</span> by <span class="math inline">\(m(\gamma ; \boldsymbol{\theta})=\prod_{k=1}^K \theta_k^{\gamma_k}\left(1-\theta_k\right)^{1-\gamma_k}\)</span>. where <span class="math inline">\(\theta_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=1\right)\)</span>, and <span class="math inline">\(\gamma_{a b, k}\)</span> is the <span class="math inline">\(k^{\text {th }}\)</span> component of <span class="math inline">\(\gamma_{a b}\)</span>. <span class="math inline">\(u(\gamma ; \xi)\)</span> can be modeled as above with parameters <span class="math inline">\(\xi_k\)</span> instead of <span class="math inline">\(\theta_k\)</span>, where <span class="math inline">\(\xi_k=\operatorname{Pr}\left(\gamma_{a b, k}=1 \mid g_{a b}=0\right)\)</span>. The goal in the MEC method is to find the set of pairs that maximize the entropy function. There is different possibilities for estimating required parameters. One the one hand we can use number of agreements (non-agreements) on the key variables, on the other hand maximum likelihood method is considering as well. In the default setting we have</p>
@@ -2659,40 +2660,51 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 <p><span class="math display">\[\theta_k^{(t)}=\frac{1}{n_M^{(t)}} \sum_{(a, b) \in \Omega} \hat{g}_{a b}^{(t)} \gamma_{a b, k}\]</span></p>
 <p>For <span class="math inline">\(\xi_k\)</span> estimation we consider rate agreements from all the pairs in <span class="math inline">\(\Omega\)</span> in which case there is no updating of <span class="math inline">\(u\left(\gamma ; \xi^{(t)}\right)\)</span> in the iterative algorithm for the unsupervised setting.</p>
 <p><span class="math display">\[\hat{\xi}_k=\frac{1}{n} \sum_{(a, b) \in \Omega} \mathbb{I}\left(\gamma_{(a b, k)}=1\right)\]</span></p>
-<p>MEC for record linkage should generally be guided by the error rates, false link rate (FLR) and missing match rate (MMR), for whose bisection procedure by a threshold value is derived. Errors are defining as follows</p>
-<p><span class="math display">\[\psi=\frac{1}{|\hat{M}|} \sum_{(a, b) \in \hat{M}}\left(1-g_{a b}\right)\]</span></p>
-<p><span class="math display">\[\tau=1-\frac{1}{n_M} \sum_{(a, b) \in \hat{M}} g_{a b}\]</span></p>
-<p>for FLR and MMR respectively.</p>
 </section>
 <section id="mec-for-unsupervised-learning---iterative-algorithm" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="mec-for-unsupervised-learning---iterative-algorithm"><span class="header-section-number">3</span> MEC for unsupervised learning - iterative algorithm</h2>
 <p>One can divide maximum entropy classification into two machine learning techniques - supervised and unsupervised learning. The second method provides iterative algorithm to obtain terminal result. D. Lee, L. C. Zhang and J. K. Kim propose following procedure.</p>
 <ol type="1">
 <li>set <span class="math inline">\(\boldsymbol{\theta}^{(0)}=\left(\theta_1^{(0)}, \ldots, \theta_K^{(0)}\right)\)</span> and <span class="math inline">\(n_M^{(0)}=\left|M_1\right|\)</span> , where <span class="math inline">\(M_1\)</span> is the maximal MEC set (only consists of the record pairs with perfect agreement of all the key variables).</li>
-<li>For the i-th iteration let <span class="math inline">\(g_{a b}^{(t)}=1\)</span> if <span class="math inline">\((a, b) \in M^{(t)}\)</span>, and 0 otherwise.</li>
+<li>For the t-th iteration let <span class="math inline">\(g_{a b}^{(t)}=1\)</span> if <span class="math inline">\((a, b) \in M^{(t)}\)</span>, and 0 otherwise.</li>
 </ol>
 <!-- -->
 <ol type="i">
 <li>update <span class="math inline">\(u\left(\gamma ; \xi^{(t)}\right)\)</span> and <span class="math inline">\(m(\gamma ; \theta^{(t)})\)</span>, given <span class="math inline">\(\mathbf{g}^{(t)}=\left\{g_{a b}^{(t)}:(a, b) \in \Omega\right\}\)</span>, using one of the estimation methods described above. Once <span class="math inline">\(\boldsymbol{\theta}^{(t)}\)</span> and <span class="math inline">\(\xi^{(t)}\)</span> are obtained, we can update <span class="math inline">\(n_M^{(t)}=\sum_\gamma n(\gamma) \hat{g}^{(t)}(\gamma)\)</span>, where <span class="math display">\[
 \hat{g}^{(t)}(\gamma) \equiv \hat{g}\left(\gamma ; \boldsymbol{\theta}^{(t)}, \xi^{(t)}\right)=\min \left\{\frac{\left|M^{(t)}\right| r^{(t)}(\gamma)}{\left|M^{(t)}\right|\left(r^{(t)}(\gamma)-1\right)+n}, 1\right\}
 \]</span> and <span class="math inline">\(r^{(t)}(\gamma)\)</span> is a probability ratio for current setting.</li>
-<li>For given <span class="math inline">\(n_{M}^{(t+1)}\)</span> we find the maximal entropy classification set <span class="math inline">\(M^{(t+1)} = =\left\{(a, b) \in \Omega: g_{a b}^{(t+1)}=1\right\}\)</span> such that <span class="math inline">\(\left|M^{(t+1)}\right|=n_M^{(t)}\)</span> by deduplication in the descending order of probablity ratio over <span class="math inline">\(\Omega\)</span>. It maximizes the entropy function.</li>
+<li>For given <span class="math inline">\(n_{M}^{(t)}\)</span> we find the maximal entropy classification set <span class="math inline">\(M^{(t+1)} = =\left\{(a, b) \in \Omega: g_{a b}^{(t+1)}=1\right\}\)</span> such that <span class="math inline">\(\left|M^{(t+1)}\right|=n_M^{(t)}\)</span> by deduplication in the descending order of probability ratio over <span class="math inline">\(\Omega\)</span>. It maximizes the entropy function.</li>
 </ol>
 <!-- -->
 <ol start="3" type="1">
 <li>Iterate until <span class="math inline">\(n_M^{(t)}=n_M^{(t+1)}\)</span> or <span class="math inline">\(\left\|\boldsymbol{\theta}^{(t)}-\boldsymbol{\theta}^{(t+1)}\right\|&lt;\epsilon\)</span>.</li>
 </ol>
 </section>
-<section id="package-installation-and-loading" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="package-installation-and-loading"><span class="header-section-number">4</span> Package installation and loading</h2>
-<p>In order to use <code>mecRecordLinkage</code> package effectively there is no need to install or load additional packages. All functionalities are build in. To prepare datasets properly using<code>reclin2</code> packages is proposed inside of the <code>mecRecordLinkage</code>.</p>
+<section id="bisection-procedure-for-mec-guided-by-the-error-rates" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="bisection-procedure-for-mec-guided-by-the-error-rates"><span class="header-section-number">4</span> Bisection procedure for MEC guided by the error rates</h2>
+<p>MEC for record linkage should generally be guided by the error rates - false link rate (FLR) and missing match rate (MMR), for whose bisection procedure by a threshold value is derived. Errors are defining as follows</p>
+<p><span class="math display">\[\psi=\frac{1}{|\hat{M}|} \sum_{(a, b) \in \hat{M}}\left(1-g_{a b}\right)\]</span></p>
+<p><span class="math display">\[\tau=1-\frac{1}{n_M} \sum_{(a, b) \in \hat{M}} g_{a b}\]</span>for FLR and MMR respectively. With the guiding algorithm be the error rates we can add following points to the performed procedure.</p>
+<ol start="2" type="1">
+<li>Let <span class="math inline">\(\psi\)</span> be the target FLR</li>
+</ol>
+<!-- -->
+<ol type="i">
+<li>Choose a threshold value <span class="math inline">\(c\)</span> and form the corresponding MEC set <span class="math inline">\(\hat{M_c}\)</span>, where <span class="math inline">\(\hat{r}_{ab} \ge c\)</span> for any <span class="math inline">\((a,b) \in \hat{M_c}\)</span>.</li>
+<li>Calculate the estimated FLR and MMR of the resulting set <span class="math inline">\(\hat{M_c}\)</span>. if <span class="math inline">\(\hat{\psi} \ge \psi\)</span> then increase <span class="math inline">\(c\)</span>, otherwise reduce <span class="math inline">\(c\)</span>.</li>
+</ol>
+<p>Iteration between these two stops would eventually lead to the value <span class="math inline">\(c\)</span> that makes <span class="math inline">\(\hat{\psi}\)</span> as close as possible to the target <span class="math inline">\(\psi\)</span>.</p>
+</section>
+<section id="package-installation-and-loading" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="package-installation-and-loading"><span class="header-section-number">5</span> Package installation and loading</h2>
+<p>In order to use <code>mecRecordLinkage</code> package there is no need to install or load additional packages. All functionalities are build in. For preparing data sets, using <code>reclin2</code> packages is proposed inside of the <code>mecRecordLinkage</code>, what is the only dependency in the library.</p>
 <div class="cell">
 
 </div>
 </section>
-<section id="work-with-example-datasets-and-initial-exploration" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="work-with-example-datasets-and-initial-exploration"><span class="header-section-number">5</span> Work with example datasets and initial exploration</h2>
-<p>To perform example of using <code>mec</code> function we can use following data sets. Data are obtained from https://github.com/djvanderlaan/tutorial-reclin-uros2021 and contain columns with the most important attributes like first name, last name or sex related to a given person (for more see documentation).</p>
+<section id="work-with-example-datasets-and-initial-exploration" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="work-with-example-datasets-and-initial-exploration"><span class="header-section-number">6</span> Work with example datasets and initial exploration</h2>
+<p>To perform example of using <code>mec</code> function we can use following data sets. Data are obtained from the <a href="https://github.com/djvanderlaan/tutorial-reclin-uros2021">reclin tutorial</a> and contain columns with the most important attributes like first name, last name or sex related to a given person (for more see documentation).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example1.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example2.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
@@ -2718,9 +2730,9 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 </section>
-<section id="unsupervised-learning-using-mec-function" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="unsupervised-learning-using-mec-function"><span class="header-section-number">6</span> Unsupervised learning using <code>mec</code> function</h2>
-<p><code>mec</code> Function enables to use unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is strata.</p>
+<section id="unsupervised-learning-using-mec-function" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="unsupervised-learning-using-mec-function"><span class="header-section-number">7</span> Unsupervised learning using <code>mec</code> function</h2>
+<p><code>mec</code> Function enables to use unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is a strata.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;firstname&quot;</span>, <span class="st">&quot;lastname&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;dobday&quot;</span>, <span class="st">&quot;dobmon&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2747,7 +2759,7 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 <pre><code>[1] 11.47321</code></pre>
 </div>
 </div>
-<p>Model returns M set, its size and linked datasets as well.</p>
+<p>Model returns M set, its size and linked data sets as well.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2795,8 +2807,8 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 </section>
-<section id="guiding-the-algorithm-by-the-error-rates" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="guiding-the-algorithm-by-the-error-rates"><span class="header-section-number">7</span> Guiding the algorithm by the error rates</h2>
+<section id="guiding-the-algorithm-by-the-error-rates" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="guiding-the-algorithm-by-the-error-rates"><span class="header-section-number">8</span> Guiding the algorithm by the error rates</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_ER1 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>model_ER1<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2821,32 +2833,91 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_ER2 &lt;- mec(A = data1, B = data2, vars = vars, blockvars = &quot;dobyear&quot;, control = control_mec(theta_est = &quot;2&quot;), error_rate = TRUE)</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#model_ER2$M</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_ER2 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">control =</span> <span class="fu">control_mec</span>(<span class="at">theta_est =</span> <span class="st">&quot;2&quot;</span>, <span class="at">increase_rate =</span> .<span class="dv">6</span>), <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>model_ER2<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  First data set:  3 044 records
+  Second data set: 3 448 records
+  Total number of pairs: 3 078 pairs
+  Blocking on: &#39;dobyear&#39;
+
+        .x   .y firstname lastname  sex dobday dobmon            r selected
+   1:  185 2341      TRUE     TRUE TRUE   TRUE   TRUE 3.968403e+05     TRUE
+   2: 1850   26      TRUE     TRUE TRUE   TRUE   TRUE 3.968403e+05     TRUE
+   3: 2492 1696      TRUE     TRUE TRUE   TRUE   TRUE 3.968403e+05     TRUE
+   4: 2954  890      TRUE     TRUE TRUE   TRUE   TRUE 3.968403e+05     TRUE
+   5:  373 2913      TRUE     TRUE TRUE   TRUE   TRUE 3.968403e+05     TRUE
+  ---                                                                      
+3074: 2387 2750     FALSE    FALSE TRUE   TRUE   TRUE 4.871208e+00     TRUE
+3075: 2725 2263     FALSE    FALSE TRUE   TRUE   TRUE 4.871208e+00     TRUE
+3076: 2868 3269     FALSE    FALSE TRUE   TRUE   TRUE 4.871208e+00     TRUE
+3077: 1519 3166     FALSE    FALSE TRUE   TRUE   TRUE 4.871208e+00     TRUE
+3078: 2124 3291     FALSE    FALSE TRUE   TRUE   TRUE 4.871208e+00     TRUE</code></pre>
+</div>
 </div>
 </section>
-<section id="other-packages-for-record-linkage" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="other-packages-for-record-linkage"><span class="header-section-number">8</span> Other packages for record linkage</h2>
+<section id="other-packages-for-record-linkage" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="other-packages-for-record-linkage"><span class="header-section-number">9</span> Other packages for record linkage</h2>
 <p>Let’s compare it to the results for <code>reclin2</code> package, where <code>EM</code> algorithm is implemented.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1, data2, <span class="at">on =</span> <span class="st">&quot;dobyear&quot;</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(pairs, <span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>lastname <span class="sc">+</span> firstname <span class="sc">+</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                            sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(pairs, <span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">threshold =</span> <span class="dv">8</span>)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(pairs, <span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>, </span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">threshold =</span> <span class="dv">0</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>linked_data <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">link</span>(pairs, <span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1, data2, <span class="at">on =</span> <span class="st">&quot;dobyear&quot;</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(pairs, <span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>lastname <span class="sc">+</span> firstname <span class="sc">+</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                            sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(pairs, <span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">threshold =</span> <span class="dv">8</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(pairs, <span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>, </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">threshold =</span> <span class="dv">0</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>linked_data <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">link</span>(pairs, <span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>threshold <span class="sc">==</span> <span class="cn">TRUE</span>, ], <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  First data set:  3 044 records
+  Second data set: 3 448 records
+  Total number of pairs: 2 748 pairs
+  Blocking on: &#39;dobyear&#39;
+
+        .x   .y firstname lastname  sex dobday dobmon
+   1:  185 2341      TRUE     TRUE TRUE   TRUE   TRUE
+   2: 1850   26      TRUE     TRUE TRUE   TRUE   TRUE
+   3: 2492 1696      TRUE     TRUE TRUE   TRUE   TRUE
+   4: 2954  890      TRUE     TRUE TRUE   TRUE   TRUE
+   5:  373 2913      TRUE     TRUE TRUE   TRUE   TRUE
+  ---                                                
+2744: 2529  505      TRUE     TRUE TRUE   TRUE   TRUE
+2745: 2656 2097      TRUE     TRUE TRUE   TRUE   TRUE
+2746: 2670 2098      TRUE     TRUE TRUE   TRUE   TRUE
+2747: 2977 1498      TRUE     TRUE TRUE   TRUE   TRUE
+2748: 3023 1203      TRUE     TRUE TRUE   TRUE   TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>ntom <span class="sc">==</span> <span class="cn">TRUE</span>, ],  <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  First data set:  3 044 records
+  Second data set: 3 448 records
+  Total number of pairs: 2 969 pairs
+  Blocking on: &#39;dobyear&#39;
+
+        .x   .y firstname lastname  sex dobday dobmon
+   1:  185 2341      TRUE     TRUE TRUE   TRUE   TRUE
+   2: 1850   26      TRUE     TRUE TRUE   TRUE   TRUE
+   3: 2492 1696      TRUE     TRUE TRUE   TRUE   TRUE
+   4: 2954  890      TRUE     TRUE TRUE   TRUE   TRUE
+   5:  373 2913      TRUE     TRUE TRUE   TRUE   TRUE
+  ---                                                
+2965: 2529  505      TRUE     TRUE TRUE   TRUE   TRUE
+2966: 2656 2097      TRUE     TRUE TRUE   TRUE   TRUE
+2967: 2670 2098      TRUE     TRUE TRUE   TRUE   TRUE
+2968: 2977 1498      TRUE     TRUE TRUE   TRUE   TRUE
+2969: 3023 1203      TRUE     TRUE TRUE   TRUE   TRUE</code></pre>
+</div>
 </div>
 <p>Notice that this method requires defining threshold by the user, while in maximal MEC there is no need to define that, what makes this method more automated.</p>
 </section>
-<section id="supervised-learning" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="supervised-learning"><span class="header-section-number">9</span> Supervised learning</h2>
+<section id="supervised-learning" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="supervised-learning"><span class="header-section-number">10</span> Supervised learning</h2>
 </section>
 
 </main>

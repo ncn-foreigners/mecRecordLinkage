@@ -48,10 +48,6 @@ mec <- function(A, B, Omega = NULL, vars, g, blockvars = NULL, control = control
   nM <- round(pi*r_gamma/(pi * (r_gamma - 1) + 1) * gamma$n)
 
   #### probability ratio 1
-  m_gamma <- r_gamma/(pi* (r_gamma -1) + 1)
-
-
-
-
+  m_gamma <- r_gamma/(pi* (r_gamma - 1) + 1)
 
 }

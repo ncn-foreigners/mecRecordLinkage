@@ -9,10 +9,11 @@ control_mec(
   deduplication = FALSE,
   add_xy = TRUE,
   maxit = 100,
-  eps = 1e-06,
+  eps = 0.001,
   theta_est = "1",
-  target_flr = 0.01,
+  target_flr = 0.05,
   treshold = 1,
+  increase_rate = 4,
   theta_start = 0.5
 )
 }
@@ -32,6 +33,8 @@ control_mec(
 \item{target_flr}{- a}
 
 \item{treshold}{- a}
+
+\item{increase_rate}{- a}
 
 \item{theta_start}{- a}
 }

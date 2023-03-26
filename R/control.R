@@ -8,6 +8,7 @@
 #' @param theta_est - a
 #' @param target_flr - a
 #' @param treshold - a
+#' @param increase_rate - a
 #' @param theta_start - a
 #'
 #' @export

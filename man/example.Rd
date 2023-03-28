@@ -4,7 +4,7 @@
 \name{example1}
 \alias{example1}
 \alias{example2}
-\title{Collaboration in Research and Methodology for Official Statistics data}
+\title{Collaboration in Research and Methodology for Official Statistics data.}
 \format{
 A data frame with 3,044 rows and 8 columns:
 \describe{
@@ -22,6 +22,6 @@ A data frame with 3,044 rows and 8 columns:
 <https://ec.europa.eu/eurostat/cros/content/essnet-di-fictitious-data-ons-job-training-record-linkage_en>
 }
 \description{
-Collaboration in Research and Methodology for Official Statistics data
+Data
 }
 \keyword{datasets}

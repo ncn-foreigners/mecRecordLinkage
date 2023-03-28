@@ -1,11 +1,17 @@
-#' Title mec
+#' @title Unsupervised Maximum Entropy Classifier for a record linkage
+#' @author Łukasz Chrostowski
+#' @description \code{mec} fits MEC record linkage for an unsupervised learning.
+#' @param A first data set to be linked.
+#' @param B second data set to be linked.
+#' @param vars character vector of variables that should be compared.
+#' @param blockvars the variables defining the blocks or strata for which all pairs of x and y will be generated.
+#' @param error_rate if `TRUE`, estimation is guided by errors rate is generated.
+#' @param control A list indicating control parameters to use in fitting model.
 #'
-#' @param A - first dataset to be linked
-#' @param B - second dataset to be linked
-#' @param vars - character vector of variables that should be compared.
-#' @param blockvars - the variables defining the blocks or strata for which all pairs of x and y will be generated.
-#' @param error_rate - if `TRUE` estimation guided by errors rate is generated
-#' @param control - a control to function for tunning set of parameters
+#' @references D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)
+#'
+#' @seealso
+#' [mecRecordLinkage::mecSup()]
 #'
 #' @importFrom reclin2 compare_pairs
 #' @importFrom reclin2 compare_vars
@@ -14,8 +20,13 @@
 #' @importFrom reclin2 tabulate_patterns
 #' @importFrom reclin2 link
 #' @export
-#'
-mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = control_mec()) {
+
+mec <- function(A,
+                B,
+                vars,
+                blockvars = NULL,
+                error_rate = FALSE,
+                control = control_mec()) {
 
   maxit <- control$maxit
   eps <- control$eps
@@ -140,6 +151,7 @@ mec <- function(A, B, vars, g, blockvars = NULL, error_rate = FALSE, control = c
        M = M,
        matching_prob = matching_prob,
        class_entropy = class_entropy,
+       to_link = to_link,
        linked_data = linked_data)
 
 }

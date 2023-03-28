@@ -1,6 +1,5 @@
-#' Collaboration in Research and Methodology for Official Statistics data
-#'
-#'
+#' @title Collaboration in Research and Methodology for Official Statistics data.
+#' @description Data
 #'
 #' @format  A data frame with 3,044 rows and 8 columns:
 #' \describe{

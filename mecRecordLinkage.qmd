@@ -20,7 +20,7 @@ library:
 
 ## Introduction
 
-The goal of the main function `mec` available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim "Maximum entropy classification for record linkage" (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction how to use package properly and then we compare obtained results with the `reclin2` package.
+The goal of the main function `mec` available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction how to use package properly and then we compare obtained results with the `reclin2` package.
 
 ## Technical details
 
@@ -77,7 +77,7 @@ Iteration between these two stops would eventually lead to the value $c$ that ma
 
 ## Package installation and loading
 
-No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets, using `reclin2` packages is proposed inside of the `mecRecordLinkage`, what is the only dependency in the library.
+No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets and solving fixed equations, `reclin2` and `spuRs` packages are used inside of the `mecRecordLinkage`.
 
 ```{r setup, echo=FALSE}
 devtools::load_all()
@@ -135,7 +135,8 @@ model_ER1$M
 ```
 
 ```{r}
-model_ER2 <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear", control = control_mec(theta_est = "2", increase_rate = .6), error_rate = TRUE)
+model_ER2 <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear",
+                 control = control_mec(theta_est = "2", increase_rate = .6), error_rate = TRUE)
 model_ER2$M
 ```
 
@@ -165,3 +166,63 @@ subset(pairs[pairs$ntom == TRUE, ],  select = -c(weights, threshold, ntom))
 Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.
 
 ## Supervised learning
+
+```{r}
+library(dplyr)
+set.seed(123)
+idx1 <- sample.int(n = nrow(data1)/10)
+data1_test <- data1[idx1, ]
+data1_train <- data1[-idx1, ]
+
+idx2 <- sample.int(n = nrow(data2)/10)
+data2_test <- data2[idx2, ]
+data2_train <- data2[-idx2, ]
+
+vars <- c("firstname", "lastname", "sex", "dobday", "dobmon")
+
+Omega <- subset(mec(A = data1_train, B = data2_train, vars = vars,
+                    blockvars = "dobyear")$to_link, select = c(-.x, -.y, -r))
+g <- Omega %>% select(selected)
+Omega <- Omega %>% select(-selected)
+
+test1 <- mecSup(A = data1_test, B = data2_test, Omega = Omega,
+                g = g, vars = vars, blockvars = "dobyear", prob_ratio = "1")
+test2 <- mecSup(A = data1_test, B = data2_test, Omega = Omega,
+                g = g, vars = vars, blockvars = "dobyear", prob_ratio = "2")
+
+
+pairs <- reclin2::pair_blocking(data1_test, data2_test, on ="dobyear") |>
+  reclin2::compare_pairs(on = vars, inplace = TRUE)
+
+m <- reclin2::problink_em(~firstname + lastname + sex + dobday + dobmon, data = pairs)
+
+pairs <- predict(m, pairs = pairs, add = TRUE)
+
+model_recc <- pairs |>
+  reclin2::select_threshold("threshold", score = "weights", threshold = 8) |>
+  reclin2::select_n_to_m("weights", variable = "ntom",  threshold = 0) %>% filter(ntom == TRUE)
+
+model_rec <- model_recc %>% reclin2::link(selection = "ntom", all = FALSE)  |>
+  as.data.frame()
+
+nrow(test1$linked_data)
+nrow(test2$linked_data)
+nrow(model_rec)
+```
+
+## Classification by logistic regression 
+```{r}
+pairs <- reclin2::pair_blocking(data1_test, data2_test, on ="dobyear") |>
+  reclin2::compare_pairs(on = vars, inplace = TRUE)
+
+pairs[is.na(pairs)] <- FALSE
+
+train_data <- cbind(Omega, g = g$selected)
+test_data <- pairs %>% select(c(-.x, -.y))
+
+model_glm <- glm(g ~ ., data = train_data, family = binomial())
+
+prob <- predict(model_glm, test_data, type = "response")
+length(na.omit(prob[prob > 1/2]))
+```
+

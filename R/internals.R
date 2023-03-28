@@ -16,6 +16,12 @@ nMformula <- function(gamma, pi = NULL, r_gamma, n, nM) {
   sum(n_gamma*g_gamma)
 }
 
+fixed_nM <- function(n_gamma, n, r_gamma){
+  function(nM){
+    sum(n_gamma * nM*r_gamma/(nM*(r_gamma - 1) + n))
+  }
+}
+
 params_formula <- function(set, n) {
 
   par <- 1/n * apply(set, 2, sum)
@@ -72,6 +78,5 @@ mle <- function(nM, n, nA, nB, A, B, M, Omega){
 
   eta <- aplly(D, 1, function(x) (1 - p) * sum())
 
-
-
 }
+

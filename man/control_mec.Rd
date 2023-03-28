@@ -2,10 +2,9 @@
 % Please edit documentation in R/control.R
 \name{control_mec}
 \alias{control_mec}
-\title{Title}
+\title{Control parameters Maximum entropy classification}
 \usage{
 control_mec(
-  comp_rate = 0.9,
   deduplication = FALSE,
   add_xy = TRUE,
   maxit = 100,
@@ -18,26 +17,30 @@ control_mec(
 )
 }
 \arguments{
-\item{comp_rate}{- a}
+\item{deduplication}{generate pairs from only x. Ignore y. This is useful for deduplication of x. Default is `FALSE`.}
 
-\item{deduplication}{- a}
+\item{add_xy}{add x and y as attributes to the returned pairs. This makes calling some subsequent operations that need x and y. Default is `FALSE`.}
 
-\item{add_xy}{- a}
+\item{maxit}{The number of maximum iteration for fitting model in the unsupervised learning. Default is `100`.}
 
-\item{maxit}{- a}
+\item{eps}{Tolerance for fitting algorithms by default \code{1e-3}.}
 
-\item{eps}{- a}
+\item{theta_est}{formula for theta estimation. Default is `1`.}
 
-\item{theta_est}{- a}
+\item{target_flr}{The target error rate (false link rate) for the fitting. Default is `.05`.}
 
-\item{target_flr}{- a}
+\item{treshold}{The threshold value for fitting the algorithm by the error rates. Default is `1`.}
 
-\item{treshold}{- a}
+\item{increase_rate}{The increasing value for fitting the algorithm by the error rates. Default is `4`.}
 
-\item{increase_rate}{- a}
-
-\item{theta_start}{- a}
+\item{theta_start}{starting value for the theta parametet. Default is `.5`.}
 }
 \description{
-Title
+Control parameters Maximum entropy classification
+}
+\author{
+Łukasz Chrostowski
+
+#' @description \code{control_mec} constructs a list with all necessary control parameters
+for MEC record linkage.
 }

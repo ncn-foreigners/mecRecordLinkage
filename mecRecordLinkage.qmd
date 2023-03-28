@@ -20,7 +20,7 @@ library:
 
 ## Introduction
 
-The goal of the main function `mec` available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where problem of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction how to use package properly and then we compare obtained results with the `reclin2` package.
+The goal of the main functions available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where process of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction to technical details, then show how to use package properly and finally compare the results with the `reclin2` package.
 
 ## Technical details
 
@@ -165,7 +165,7 @@ subset(pairs[pairs$ntom == TRUE, ],  select = -c(weights, threshold, ntom))
 
 Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.
 
-## Supervised learning
+## Supervised learning using `mecSup` function
 
 ```{r}
 library(dplyr)
@@ -210,7 +210,8 @@ nrow(test2$linked_data)
 nrow(model_rec)
 ```
 
-## Classification by logistic regression 
+## Classification by logistic regression
+
 ```{r}
 pairs <- reclin2::pair_blocking(data1_test, data2_test, on ="dobyear") |>
   reclin2::compare_pairs(on = vars, inplace = TRUE)
@@ -225,4 +226,3 @@ model_glm <- glm(g ~ ., data = train_data, family = binomial())
 prob <- predict(model_glm, test_data, type = "response")
 length(na.omit(prob[prob > 1/2]))
 ```
-

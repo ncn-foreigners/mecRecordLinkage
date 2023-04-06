@@ -25,9 +25,6 @@ mec(A, B, vars, blockvars = NULL, error_rate = FALSE, control = control_mec())
 \references{
 D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)
 }
-\seealso{
-[mecRecordLinkage::mecSup()]
-}
 \author{
 Łukasz Chrostowski
 }

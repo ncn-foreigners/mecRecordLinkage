@@ -13,7 +13,8 @@ control_mec(
   target_flr = 0.05,
   treshold = 1,
   increase_rate = 4,
-  theta_start = 0.5
+  theta_start = 0.5,
+  fixed_method = "Newton"
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ control_mec(
 \item{increase_rate}{The increasing value for fitting the algorithm by the error rates. Default is `4`.}
 
 \item{theta_start}{starting value for the theta parametet. Default is `.5`.}
+
+\item{fixed_method}{fixed point method}
 }
 \description{
 Control parameters Maximum entropy classification

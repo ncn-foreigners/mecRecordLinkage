@@ -92,6 +92,8 @@ To perform example of using `mec` function we can use following data sets. Data 
 ```{r}
 data1 <- read.csv("data/example1.csv", stringsAsFactors = FALSE)
 data2 <- read.csv("data/example2.csv", stringsAsFactors = FALSE)
+data1 <- data1 %>% select(-id)
+data2 <- data2 %>% select(-id)
 head(data1)
 head(data2)
 ```
@@ -108,9 +110,8 @@ model <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear")
 Let's look at the list of the model parameters.
 
 ```{r}
-model$theta # for m-probability
-model$eta # for u-probability
-model$matching_prob # Expected value of being in the M set
+model$params
+model$matched_ratio # Expected value of being in the M set
 model$class_entropy # value of the entropy function for the final result
 ```
 

@@ -7,20 +7,19 @@
 #' @param vars `character` vector of variables that should be compared.
 #' @param g The dummy variable for matched and non-matched pairs in the Omega set.
 #' @param blockvars The variables defining the blocks or strata for which all pairs of x and y will be generated.
+#' @param string_comparator named vector of functions for comparing pairs of records.
 #' @param control A list indicating control parameters to use in fitting model.
 #' @param prob_ratio Method for the probability ratio estimation.
 #'
 #'
 #' @references D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)
 #'
-#' @seealso
-#' [mecRecordLinkage::mec()]
-#'
 #' @importFrom reclin2 compare_pairs
 #' @importFrom reclin2 compare_vars
 #' @importFrom reclin2 pair_blocking
 #' @importFrom reclin2 pair
-#' @importFrom spuRs fixedpoint
+#' @importFrom FixedPoint FixedPoint
+#' @importFrom reclin2 identical
 #' @export
 
 mecSup <- function(A,
@@ -29,22 +28,26 @@ mecSup <- function(A,
                    vars,
                    g,
                    blockvars = NULL,
+                   string_comparator = list(reclin2::identical()),
                    control = control_mec(),
                    prob_ratio = "1") {
 
   nA <- nrow(A)
   nB <- nrow(B)
+  fixed_method <- control$fixed_method
+  all <- control$all
 
   if(is.null(blockvars)) {
     pairs <- reclin2::pair(A, B, deduplication = control$deduplication, add_xy = control$add_xy)
-    reclin2::compare_pairs(pairs, on = vars, inplace = TRUE)
+    reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
   } else {
     pairs <- reclin2::pair_blocking(A, B, on = blockvars, deduplication = control$deduplication, add_xy = control$add_xy)
-    reclin2::compare_pairs(pairs, on = vars, inplace = TRUE)
+    reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
   }
   pairs[is.na(pairs)] <- FALSE
   gamma <- reclin2::tabulate_patterns(pairs)
   n_pairs <- nrow(pairs)
+  K <- length(vars)
 
   #supervised
   u_loc <- which(g == 0)
@@ -85,9 +88,10 @@ mecSup <- function(A,
 
   # Application to the target pairs
   #nM_sup <- sum(pi*r_class/(pi * (r_class - 1) + 1) * gamma$n)
-  nM_start <- sum(ifelse(apply(pairs, 1, all), 1, 0))
+  nM_start <- sum(ifelse(apply(pairs, 1, sum) == K, 1, 0))
   fun <- fixed_nM(n_gamma = gamma$n, r_gamma = r_class, n = n_pairs)
-  nM_sup <- spuRs::fixedpoint(ftn = fun, x0 = nM_start)
+  #nM_sup <- spuRs::fixedpoint(ftn = fun, x0 = nM_start)
+  nM_sup <- FixedPoint::FixedPoint(Function = fun, Inputs = nM_start, Method = fixed_method)$FixedPoint
 
   m <- gamma_formula(theta, subset(pairs, select = vars))
   u <- gamma_formula(etau, subset(pairs, select = vars))
@@ -102,16 +106,18 @@ mecSup <- function(A,
   U <- pairs_ord[-c(1:round(nM_sup)), ]
 
 
+  max_class_entropy <- class_entropy(round(nM_sup), m$r)
   M$selected <- TRUE
   U$selected <- FALSE
   to_link <- rbind(M, U)
-  linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = FALSE)
+  linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = all)
   matching_prob <- nM_sup/n_pairs
+  params <- t(data.frame(m = theta, u = eta))
 
-  list(theta = theta,
-       eta = eta,
-       matching_prob = matching_prob,
+  list(params = params,
+       matched_ratio = matching_prob,
+       max_class_entropy = max_class_entropy,
        M = M,
-       linked_data = linked_data,
-       Omega = Omega)
+       U = U,
+       linked_data = linked_data)
 }

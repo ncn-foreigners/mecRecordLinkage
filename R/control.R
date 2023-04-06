@@ -13,6 +13,7 @@
 #' @param treshold The threshold value for fitting the algorithm by the error rates. Default is `1`.
 #' @param increase_rate The increasing value for fitting the algorithm by the error rates. Default is `4`.
 #' @param theta_start starting value for the theta parametet. Default is `.5`.
+#' @param fixed_method fixed point method
 #'
 #' @export
 control_mec <- function(deduplication = FALSE,
@@ -20,10 +21,13 @@ control_mec <- function(deduplication = FALSE,
                         maxit = 100,
                         eps = 1e-3,
                         theta_est = "1",
+                        eta_est = "1",
                         target_flr = .05,
                         treshold = 1, # to consider
                         increase_rate = 4,
-                        theta_start = .5){
+                        theta_start = .5,
+                        fixed_method = "Newton",
+                        all = FALSE){
 
 
   list(deduplication = deduplication,
@@ -31,8 +35,11 @@ control_mec <- function(deduplication = FALSE,
        maxit = maxit,
        eps = eps,
        theta_est = theta_est,
+       eta_est = eta_est,
        target_flr = target_flr,
        treshold = treshold,
        increase_rate = increase_rate,
-       theta_start = theta_start)
+       theta_start = theta_start,
+       fixed_method = fixed_method,
+       all = all)
 }

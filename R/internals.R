@@ -51,7 +51,7 @@ gamma_formula <- function(par, subpairs){
   apply(subpairs, 1, function(x) prod(par^x * (1 - par)^(1-x)))
 }
 
-mle <- function(nM, n, nA, nB, A, B, M, Omega){
+mle <- function(nM, n, A, B, M, u, Omega){
 
   if (nA > nB) {
     C <- B
@@ -60,23 +60,34 @@ mle <- function(nM, n, nA, nB, A, B, M, Omega){
     nA <- nrow(A)
     nB <- nrow(B)
   }
+  #zA <- apply(A, 1, unique)
+  #zB <- apply(B, 1, unique)
 
   pi <- nM/n
   p <- nA * pi
-  e <- rbinom(n = nM, size = 1, prob = 1/2)
+  mA <- apply(A, 2, table)
+  nD <- length(unlist(mA))
+  mle1 <- function(A){
+    mA <- apply(A, 2, table)
+    function(x){
+      sum(unlist(lapply(mA, function(z) log(sum(mapply("*", x, z))))))
+    }
+  }
 
-  mA <- unlist(apply(A, 2, table))
-  log_likeA <- function(x) sum(log(x * mA)) # x is mkd
+  #ob <-  maxLik::maxLik(logLik = mle1(A), start = rep(1, nD))  # perhaps stats4::mle instead of maxLik
+  #m <- ob$estimate
 
-  mB <- unlist(apply(B, 2, table))
-  uB <- unlist(apply(B, 2, table))
-  log_likeB <- function(x) sum(delta * log(p) * prod(x * mB)) + sum((1 - delta) * log(1 - p) * prod(x * uB)) # x is mkd and ukd
-
-  um <- u*m
-
-  eta <- ((1 - p) * sum(um) + p * (1 - 1/nA) * sum(m^2))/(1 - p/nA)
-
-  eta <- aplly(D, 1, function(x) (1 - p) * sum())
-
+  mle2 <- function(B){
+    mB <- apply(B, 2, table)
+    uB <- apply(B, 2, table)
+    function(x){
+      #log_likeB <- sum(delta * log(p) * prod(x * mB)) + sum((1 - delta) * log(1 - p) * prod(x * uB)) # x is mkd and ukd
+      sum(delta * unlist(lapply(mA, function(z) log(p*prod(mapply("*", x, z)))))) + sum((1 - delta) * unlist(lapply(mA, function(z) log((1 - p)*prod(mapply("*", x, z))))))
+    }
+  }
+  #eta <- ((1 - p) * sum(u*m) + p * (1 - 1/nA) * sum(m^2))/(1 - p/nA)
+  #eta <- apply(D, 1, function(x) (1 - p) * sum())
+  #eta
+  m
 }
 

@@ -6,12 +6,10 @@
 #' @param vars character vector of variables that should be compared.
 #' @param blockvars the variables defining the blocks or strata for which all pairs of x and y will be generated.
 #' @param error_rate if `TRUE`, estimation is guided by errors rate is generated.
+#' @param string_comparator named vector of functions for comparing pairs of records.
 #' @param control A list indicating control parameters to use in fitting model.
 #'
 #' @references D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)
-#'
-#' @seealso
-#' [mecRecordLinkage::mecSup()]
 #'
 #' @importFrom reclin2 compare_pairs
 #' @importFrom reclin2 compare_vars
@@ -19,6 +17,7 @@
 #' @importFrom reclin2 pair
 #' @importFrom reclin2 tabulate_patterns
 #' @importFrom reclin2 link
+#' @importFrom reclin2 identical
 #' @export
 
 mec <- function(A,
@@ -26,21 +25,26 @@ mec <- function(A,
                 vars,
                 blockvars = NULL,
                 error_rate = FALSE,
+                string_comparator = list(reclin2::identical()),
                 control = control_mec()) {
 
   maxit <- control$maxit
   eps <- control$eps
   theta_est <- control$theta_est
+  eta_est <- control$eta_est
   treshold <- control$treshold
   target_flr <- control$target_flr
   increase_rate <- control$increase_rate
+  all <- control$all
+  nA <- nrow(A)
+  nB <- nrow(B)
 
   if(is.null(blockvars)) {
     pairs <- reclin2::pair(A, B, deduplication = control$deduplication, add_xy = control$add_xy)
-    reclin2::compare_pairs(pairs, on = vars, inplace = TRUE)
+    reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
     }  else {
     pairs <- reclin2::pair_blocking(A, B, on = blockvars, deduplication = control$deduplication, add_xy = control$add_xy)
-    reclin2::compare_pairs(pairs, on = vars, inplace = TRUE)
+    reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
     }
 
   pairs[is.na(pairs)] <- FALSE
@@ -50,7 +54,9 @@ mec <- function(A,
   K <- length(vars)
   theta_start <- rep(control$theta_start, K)
 
-  g_start <- ifelse(apply(Omega, 1, all), 1, 0)
+
+  g_start <- ifelse(apply(Omega, 1, sum) == K, 1, 0)
+
   nM_start <- sum(g_start)
   u_loc = which(g_start==0)
   m_loc = which(g_start==1)
@@ -69,11 +75,17 @@ mec <- function(A,
       it <- it + 1
 
       m_gamma <- gamma_formula(theta_start, subset(gamma, select = c(-n)))
+      if (eta_est == "2") {
+        u_gamma <- gamma_formula(eta, subset(gamma, select = c(-n)))
+      }
       r_gamma <- m_gamma/u_gamma
 
       nM_prev <- nM_start
       nM <- nMformula(gamma = gamma, r_gamma = r_gamma, n = n, nM = nM_start)
 
+      if (eta_est == "2") {
+        u_gamma_omega <- gamma_formula(eta, Omega)
+      }
       pairs$r <- gamma_formula(theta_start, Omega)/u_gamma_omega
       pairs_ord <- pairs[order(-pairs$r), ]
       M <- pairs_ord[1:nM, ]
@@ -87,6 +99,10 @@ mec <- function(A,
       } else if (theta_est == "2") {
         g_gamma <- sapply(nM_prev*pairs$r/(nM_prev * (pairs$r - 1) + n), function(x) min(x, 1)) # problem here
         theta <- params_formula_theta(Omega, nM_start, g_gamma)
+      }
+
+     if (eta_est == "2") {
+        eta <- mle(nM = nM_start, n = n, A = A, B = B, M = M, u, Omega = Omega)
       }
 
 
@@ -140,18 +156,18 @@ mec <- function(A,
   }
 
   matching_prob <- nM/n
-  class_entropy <- class_entropy(nM, M$r)
+  max_class_entropy <- class_entropy(nM, M$r)
   M$selected <- TRUE
   U$selected <- FALSE
   to_link <- rbind(M, U)
-  linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = FALSE)
+  linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = all)
+  params <- t(data.frame(m = theta, u = eta))
 
-  list(theta = theta,
-       eta = eta,
+  list(params = params,
+       matched_ratio = matching_prob,
+       max_class_entropy = max_class_entropy,
        M = M,
-       matching_prob = matching_prob,
-       class_entropy = class_entropy,
-       to_link = to_link,
+       U = U,
        linked_data = linked_data)
 
 }

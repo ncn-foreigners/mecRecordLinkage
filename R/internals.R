@@ -51,7 +51,7 @@ gamma_formula <- function(par, subpairs){
   apply(subpairs, 1, function(x) prod(par^x * (1 - par)^(1-x)))
 }
 
-mle <- function(nM, n, A, B, M, u, Omega){
+mlee <- function(nM, n, A, B, M, u, Omega){
 
   if (nA > nB) {
     C <- B
@@ -70,19 +70,35 @@ mle <- function(nM, n, A, B, M, u, Omega){
   mle1 <- function(A){
     mA <- apply(A, 2, table)
     function(x){
-      sum(unlist(lapply(mA, function(z) log(sum(mapply("*", x, z))))))
+      idx <- vector(mode = "numeric", length = length(mA))
+      logs <- vector(mode = "numeric", length = length(mA))
+      start <- 1
+      a <- 0
+      for (i in 1:length(mA)) {
+        idx[i] <- length(mA[[i]]) + a
+        logs[i] <- log(sum(x[start:idx[i]] * mA[[i]]))
+        start <- idx[i] + 1
+        a <- idx[i]
+      }
+      sum(logs)
     }
   }
 
-  #ob <-  maxLik::maxLik(logLik = mle1(A), start = rep(1, nD))  # perhaps stats4::mle instead of maxLik
-  #m <- ob$estimate
 
-  mle2 <- function(B){
+  mle2 <- function(B, p, deltaB){ # EM algorithm here
     mB <- apply(B, 2, table)
     uB <- apply(B, 2, table)
     function(x){
       #log_likeB <- sum(delta * log(p) * prod(x * mB)) + sum((1 - delta) * log(1 - p) * prod(x * uB)) # x is mkd and ukd
       sum(delta * unlist(lapply(mA, function(z) log(p*prod(mapply("*", x, z)))))) + sum((1 - delta) * unlist(lapply(mA, function(z) log((1 - p)*prod(mapply("*", x, z))))))
+      for (i in 1:length(mB)) {
+        idx[i] <- length(mA[[i]]) + a
+        mbk <- sum(x[start:idx[i]] * mB[[i]])
+        ubk <- sum(x[start:idx[i]] * uB[[i]])
+        start <- idx[i] + 1
+        a <- idx[i]
+      }
+      deltaB * log(p * prod(mbk)) + (1 - deltaB) * log((1 - p) * prod(ubk))
     }
   }
   #eta <- ((1 - p) * sum(u*m) + p * (1 - 1/nA) * sum(m^2))/(1 - p/nA)
@@ -90,4 +106,3 @@ mle <- function(nM, n, A, B, M, u, Omega){
   #eta
   m
 }
-

@@ -73,7 +73,6 @@ mec <- function(A,
     it <- 0
     while(TRUE) {
       it <- it + 1
-
       m_gamma <- gamma_formula(theta_start, subset(gamma, select = c(-n)))
       if (eta_est == "2") {
         u_gamma <- gamma_formula(eta, subset(gamma, select = c(-n)))
@@ -104,7 +103,6 @@ mec <- function(A,
      if (eta_est == "2") {
         eta <- mle(nM = nM_start, n = n, A = A, B = B, M = M, u, Omega = Omega)
       }
-
 
       ##############
       if (sqrt(sum((theta - theta_start)^2)) < eps) break;
@@ -149,6 +147,7 @@ mec <- function(A,
       ##############
       if (sqrt(sum((theta - theta_start)^2)) < eps) break;
       if (round(nM2) == round(nM_prev)) break;
+      #if (abs(flr - target_flr) < eps) break;
 
       theta_start <- theta
       nM_prev <- nM2
@@ -169,5 +168,4 @@ mec <- function(A,
        M = M,
        U = U,
        linked_data = linked_data)
-
 }

@@ -9,11 +9,13 @@
 #' @param maxit The number of maximum iteration for fitting model in the unsupervised learning. Default is `100`.
 #' @param eps Tolerance for fitting algorithms by default \code{1e-3}.
 #' @param theta_est formula for theta estimation. Default is `1`.
+#' @param eta_est formula for eta estimation. Default is `1`.
 #' @param target_flr The target error rate (false link rate) for the fitting. Default is `.05`.
 #' @param treshold The threshold value for fitting the algorithm by the error rates. Default is `1`.
 #' @param increase_rate The increasing value for fitting the algorithm by the error rates. Default is `4`.
 #' @param theta_start starting value for the theta parametet. Default is `.5`.
 #' @param fixed_method fixed point method
+#' @param all - a
 #'
 #' @export
 control_mec <- function(deduplication = FALSE,

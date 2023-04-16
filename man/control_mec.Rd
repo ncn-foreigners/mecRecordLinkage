@@ -10,11 +10,13 @@ control_mec(
   maxit = 100,
   eps = 0.001,
   theta_est = "1",
+  eta_est = "1",
   target_flr = 0.05,
   treshold = 1,
   increase_rate = 4,
   theta_start = 0.5,
-  fixed_method = "Newton"
+  fixed_method = "Newton",
+  all = FALSE
 )
 }
 \arguments{
@@ -28,6 +30,8 @@ control_mec(
 
 \item{theta_est}{formula for theta estimation. Default is `1`.}
 
+\item{eta_est}{formula for eta estimation. Default is `1`.}
+
 \item{target_flr}{The target error rate (false link rate) for the fitting. Default is `.05`.}
 
 \item{treshold}{The threshold value for fitting the algorithm by the error rates. Default is `1`.}
@@ -37,6 +41,8 @@ control_mec(
 \item{theta_start}{starting value for the theta parametet. Default is `.5`.}
 
 \item{fixed_method}{fixed point method}
+
+\item{all}{- a}
 }
 \description{
 Control parameters Maximum entropy classification

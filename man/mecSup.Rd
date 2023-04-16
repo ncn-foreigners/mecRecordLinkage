@@ -11,6 +11,7 @@ mecSup(
   vars,
   g,
   blockvars = NULL,
+  string_comparator = list(reclin2::identical()),
   control = control_mec(),
   prob_ratio = "1"
 )
@@ -27,6 +28,8 @@ mecSup(
 \item{g}{The dummy variable for matched and non-matched pairs in the Omega set.}
 
 \item{blockvars}{The variables defining the blocks or strata for which all pairs of x and y will be generated.}
+
+\item{string_comparator}{named vector of functions for comparing pairs of records.}
 
 \item{control}{A list indicating control parameters to use in fitting model.}
 

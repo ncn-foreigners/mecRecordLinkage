@@ -4,7 +4,15 @@
 \alias{mec}
 \title{Unsupervised Maximum Entropy Classifier for a record linkage}
 \usage{
-mec(A, B, vars, blockvars = NULL, error_rate = FALSE, control = control_mec())
+mec(
+  A,
+  B,
+  vars,
+  blockvars = NULL,
+  error_rate = FALSE,
+  string_comparator = list(reclin2::identical()),
+  control = control_mec()
+)
 }
 \arguments{
 \item{A}{first data set to be linked.}
@@ -16,6 +24,8 @@ mec(A, B, vars, blockvars = NULL, error_rate = FALSE, control = control_mec())
 \item{blockvars}{the variables defining the blocks or strata for which all pairs of x and y will be generated.}
 
 \item{error_rate}{if `TRUE`, estimation is guided by errors rate is generated.}
+
+\item{string_comparator}{named vector of functions for comparing pairs of records.}
 
 \item{control}{A list indicating control parameters to use in fitting model.}
 }

@@ -18,11 +18,11 @@ library:
   - reclin2
 ---
 
-## Introduction
+# Introduction
 
 The goal of the main functions available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where process of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction to technical details, then show how to use package properly and finally compare the results with the `reclin2` package.
 
-## Technical details
+##Technical details
 
 With record linkage we are trying to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called `comparison space` $\Omega=A \times B=M \cup U$ consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio
 
@@ -87,17 +87,14 @@ For the supervised method we suppose $\operatorname{M}$ observed for given $\ope
     $$
 3.  Obtain $\operatorname{M}$ set by deduplication in the descending order of $r(\gamma)$ such that $|\operatorname{M}| = n_M$.
 
-## Package installation and loading
+# Package installation and Usage
 
 No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets and solving fixed equations, `reclin2` and `FixedPoints` packages are used inside of the `mecRecordLinkage`.
 
-```{r setup, echo=FALSE}
-#devtools::load_all()
-#remotes::install_github("ncn-foreigners/mecRecordLinkage")
-#library(mecRecordLinkage)
+```{r setup, echo=FALSE, message=FALSE}
+remotes::install_github("ncn-foreigners/mecRecordLinkage")
+library(mecRecordLinkage)
 ```
-
-## Work with example datasets and initial exploration
 
 To perform example of using `mec` function we can use following data sets. Data are obtained from the [reclin tutorial](https://github.com/djvanderlaan/tutorial-reclin-uros2021) and contain columns with the most important attributes such as first name, last name or sex related to a given person (for more see documentation).
 
@@ -111,7 +108,7 @@ head(data1)
 head(data2)
 ```
 
-## Unsupervised learning using `mec` function
+## The `mec` function for unsupervised learning
 
 `mec` Function enables the application of an unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is a strata.
 
@@ -177,9 +174,10 @@ subset(pairs[pairs$ntom == TRUE, ],  select = -c(weights, threshold, ntom))
 
 Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.
 
-## Supervised learning using `mecSup` function
+## The `mecSup` function for supervised learning 
 
 ```{r}
+
 set.seed(123)
 idx1 <- sample.int(n = nrow(data1)/10)
 data1_test <- data1[idx1, ]
@@ -199,11 +197,19 @@ Omega <- subset(rbind(M, U), select = c(-.x, -.y, -r))
 g <- Omega %>% select(selected)
 Omega <- Omega %>% select(-selected)
 
+############ MecRecordLinkage ##############
+
 test1 <- mecSup(A = data1_test, B = data2_test, Omega = Omega,
                 g = g, vars = vars, blockvars = "dobyear", prob_ratio = "1")
 test2 <- mecSup(A = data1_test, B = data2_test, Omega = Omega,
                 g = g, vars = vars, blockvars = "dobyear", prob_ratio = "2")
 
+mec1 <- nrow(test1$linked_data)
+mec2 <- nrow(test2$linked_data)
+```
+
+```{r}
+############ reclin2 ##############
 
 pairs <- reclin2::pair_blocking(data1_test, data2_test, on ="dobyear") |>
   reclin2::compare_pairs(on = vars, inplace = TRUE)
@@ -219,14 +225,12 @@ model_recc <- pairs |>
 model_rec <- model_recc %>% reclin2::link(selection = "ntom", all = FALSE)  |>
   as.data.frame()
 
-mec1 <- nrow(test1$linked_data)
-mec2 <- nrow(test2$linked_data)
 rec <- nrow(model_rec)
 ```
 
-## Classification by logistic regression
-
 ```{r}
+############ glm ##############
+
 pairs <- reclin2::pair_blocking(data1_test, data2_test, on ="dobyear") |>
   reclin2::compare_pairs(on = vars, inplace = TRUE)
 

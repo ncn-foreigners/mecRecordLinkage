@@ -42,7 +42,7 @@ control_mec(
 
 \item{fixed_method}{fixed point method}
 
-\item{all}{- a}
+\item{all}{return all records, even those that don't match.}
 }
 \description{
 Control parameters Maximum entropy classification

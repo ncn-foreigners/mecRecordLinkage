@@ -75,14 +75,26 @@ ii) Calculate the estimated FLR and MMR of the resulting set $\hat{M_c}$. if $\h
 
 Iteration between these two stops would eventually lead to the value $c$ that makes $\hat{\psi}$ as close as possible to the target $\psi$.
 
+## Supervised learning
+
+For the supervised method we suppose $\operatorname{M}$ observed for given $\operatorname{\Omega}$ and trained classifier is to be applied for the pairs outside of the $\operatorname{\Omega}$. Algorithm:
+
+1.  obtain parameters from observed pairs and compute probability ratio $r(\gamma)$ for pairs outside of $\Omega$.
+2.  Solve following fixed equation so as to find optimal size of objective matching set. $$
+    n_M=\sum_{(a, b) \in \Omega} \hat{g}\left(\gamma_{a b}\right)=\sum_{\gamma \in S} n(\gamma) \hat{g}(\gamma)
+    $$ where $$
+    \hat{g}(\gamma):=\operatorname{Pr}\left(g_{a b}=1 \mid \gamma_{a b}=\gamma\right)=\frac{\pi r(\gamma)}{\pi(r(\gamma)-1)+1}=\frac{n_M r(\gamma)}{n_M(r(\gamma)-1)+n}
+    $$
+3.  Obtain $\operatorname{M}$ set by deduplication in the descending order of $r(\gamma)$ such that $|\operatorname{M}| = n_M$.
+
 ## Package installation and loading
 
-No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets and solving fixed equations, `reclin2` and `spuRs` packages are used inside of the `mecRecordLinkage`.
+No other libraries need to be installed to use the `mecRecordLinkage` package. All functionalities are build in. For preparing data sets and solving fixed equations, `reclin2` and `FixedPoints` packages are used inside of the `mecRecordLinkage`.
 
 ```{r setup, echo=FALSE}
-devtools::load_all()
-#remotes::install_github("ncn-foreigners/mecRecordLinkage")
-#library(mecRecordLinkage)
+#devtools::load_all()
+remotes::install_github("ncn-foreigners/mecRecordLinkage")
+library(mecRecordLinkage)
 ```
 
 ## Work with example datasets and initial exploration
@@ -90,6 +102,7 @@ devtools::load_all()
 To perform example of using `mec` function we can use following data sets. Data are obtained from the [reclin tutorial](https://github.com/djvanderlaan/tutorial-reclin-uros2021) and contain columns with the most important attributes such as first name, last name or sex related to a given person (for more see documentation).
 
 ```{r}
+library(dplyr)
 data1 <- read.csv("data/example1.csv", stringsAsFactors = FALSE)
 data2 <- read.csv("data/example2.csv", stringsAsFactors = FALSE)
 data1 <- data1 %>% select(-id)
@@ -169,7 +182,6 @@ Notice that this method requires the user to select a threshold, while with the 
 ## Supervised learning using `mecSup` function
 
 ```{r}
-library(dplyr)
 set.seed(123)
 idx1 <- sample.int(n = nrow(data1)/10)
 data1_test <- data1[idx1, ]
@@ -181,8 +193,11 @@ data2_train <- data2[-idx2, ]
 
 vars <- c("firstname", "lastname", "sex", "dobday", "dobmon")
 
-Omega <- subset(mec(A = data1_train, B = data2_train, vars = vars,
-                    blockvars = "dobyear")$to_link, select = c(-.x, -.y, -r))
+model <- mec(A = data1_train, B = data2_train, vars = vars, blockvars = "dobyear")
+M <- model$M
+U <- model$U
+
+Omega <- subset(rbind(M, U), select = c(-.x, -.y, -r))
 g <- Omega %>% select(selected)
 Omega <- Omega %>% select(-selected)
 
@@ -206,9 +221,9 @@ model_recc <- pairs |>
 model_rec <- model_recc %>% reclin2::link(selection = "ntom", all = FALSE)  |>
   as.data.frame()
 
-nrow(test1$linked_data)
-nrow(test2$linked_data)
-nrow(model_rec)
+mec1 <- nrow(test1$linked_data)
+mec2 <- nrow(test2$linked_data)
+rec <- nrow(model_rec)
 ```
 
 ## Classification by logistic regression
@@ -225,5 +240,8 @@ test_data <- pairs %>% select(c(-.x, -.y))
 model_glm <- glm(g ~ ., data = train_data, family = binomial())
 
 prob <- predict(model_glm, test_data, type = "response")
-length(na.omit(prob[prob > 1/2]))
+glm <- length(na.omit(prob[prob > 1/2]))
+
+# Size of the final set by each method
+data.frame(Mec1 = mec1, Mec2 = mec2, reclin2 = rec, glm = glm)
 ```

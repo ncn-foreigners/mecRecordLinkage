@@ -15,7 +15,7 @@
 #' @param increase_rate The increasing value for fitting the algorithm by the error rates. Default is `4`.
 #' @param theta_start starting value for the theta parametet. Default is `.5`.
 #' @param fixed_method fixed point method
-#' @param all - a
+#' @param all return all records, even those that don't match.
 #'
 #' @export
 control_mec <- function(deduplication = FALSE,

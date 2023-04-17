@@ -106,7 +106,7 @@ mecSup <- function(A,
   U <- pairs_ord[-c(1:round(nM_sup)), ]
 
 
-  max_class_entropy <- class_entropy(round(nM_sup), m$r)
+  max_class_entropy <- class_entropy(round(nM_sup), M$r)
   M$selected <- TRUE
   U$selected <- FALSE
   to_link <- rbind(M, U)

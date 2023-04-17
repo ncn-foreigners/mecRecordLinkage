@@ -2612,13 +2612,14 @@ vertical-align: -.125em;
   <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="toc-section-number">2</span>  Technical details</a></li>
   <li><a href="#mec-for-unsupervised-learning---iterative-algorithm" id="toc-mec-for-unsupervised-learning---iterative-algorithm" class="nav-link" data-scroll-target="#mec-for-unsupervised-learning---iterative-algorithm"><span class="toc-section-number">3</span>  MEC for unsupervised learning - iterative algorithm</a></li>
   <li><a href="#bisection-procedure-for-mec-guided-by-the-error-rates" id="toc-bisection-procedure-for-mec-guided-by-the-error-rates" class="nav-link" data-scroll-target="#bisection-procedure-for-mec-guided-by-the-error-rates"><span class="toc-section-number">4</span>  Bisection procedure for MEC guided by the error rates</a></li>
-  <li><a href="#package-installation-and-loading" id="toc-package-installation-and-loading" class="nav-link" data-scroll-target="#package-installation-and-loading"><span class="toc-section-number">5</span>  Package installation and loading</a></li>
-  <li><a href="#work-with-example-datasets-and-initial-exploration" id="toc-work-with-example-datasets-and-initial-exploration" class="nav-link" data-scroll-target="#work-with-example-datasets-and-initial-exploration"><span class="toc-section-number">6</span>  Work with example datasets and initial exploration</a></li>
-  <li><a href="#unsupervised-learning-using-mec-function" id="toc-unsupervised-learning-using-mec-function" class="nav-link" data-scroll-target="#unsupervised-learning-using-mec-function"><span class="toc-section-number">7</span>  Unsupervised learning using <code>mec</code> function</a></li>
-  <li><a href="#guiding-the-algorithm-by-the-error-rates" id="toc-guiding-the-algorithm-by-the-error-rates" class="nav-link" data-scroll-target="#guiding-the-algorithm-by-the-error-rates"><span class="toc-section-number">8</span>  Guiding the algorithm by the error rates</a></li>
-  <li><a href="#other-packages-for-record-linkage" id="toc-other-packages-for-record-linkage" class="nav-link" data-scroll-target="#other-packages-for-record-linkage"><span class="toc-section-number">9</span>  Other packages for record linkage</a></li>
-  <li><a href="#supervised-learning-using-mecsup-function" id="toc-supervised-learning-using-mecsup-function" class="nav-link" data-scroll-target="#supervised-learning-using-mecsup-function"><span class="toc-section-number">10</span>  Supervised learning using <code>mecSup</code> function</a></li>
-  <li><a href="#classification-by-logistic-regression" id="toc-classification-by-logistic-regression" class="nav-link" data-scroll-target="#classification-by-logistic-regression"><span class="toc-section-number">11</span>  Classification by logistic regression</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning"><span class="toc-section-number">5</span>  Supervised learning</a></li>
+  <li><a href="#package-installation-and-loading" id="toc-package-installation-and-loading" class="nav-link" data-scroll-target="#package-installation-and-loading"><span class="toc-section-number">6</span>  Package installation and loading</a></li>
+  <li><a href="#work-with-example-datasets-and-initial-exploration" id="toc-work-with-example-datasets-and-initial-exploration" class="nav-link" data-scroll-target="#work-with-example-datasets-and-initial-exploration"><span class="toc-section-number">7</span>  Work with example datasets and initial exploration</a></li>
+  <li><a href="#unsupervised-learning-using-mec-function" id="toc-unsupervised-learning-using-mec-function" class="nav-link" data-scroll-target="#unsupervised-learning-using-mec-function"><span class="toc-section-number">8</span>  Unsupervised learning using <code>mec</code> function</a></li>
+  <li><a href="#guiding-the-algorithm-by-the-error-rates" id="toc-guiding-the-algorithm-by-the-error-rates" class="nav-link" data-scroll-target="#guiding-the-algorithm-by-the-error-rates"><span class="toc-section-number">9</span>  Guiding the algorithm by the error rates</a></li>
+  <li><a href="#other-packages-for-record-linkage" id="toc-other-packages-for-record-linkage" class="nav-link" data-scroll-target="#other-packages-for-record-linkage"><span class="toc-section-number">10</span>  Other packages for record linkage</a></li>
+  <li><a href="#supervised-learning-using-mecsup-function" id="toc-supervised-learning-using-mecsup-function" class="nav-link" data-scroll-target="#supervised-learning-using-mecsup-function"><span class="toc-section-number">11</span>  Supervised learning using <code>mecSup</code> function</a></li>
+  <li><a href="#classification-by-logistic-regression" id="toc-classification-by-logistic-regression" class="nav-link" data-scroll-target="#classification-by-logistic-regression"><span class="toc-section-number">12</span>  Classification by logistic regression</a></li>
   </ul>
 </nav>
 </div>
@@ -2696,72 +2697,76 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </ol>
 <p>Iteration between these two stops would eventually lead to the value <span class="math inline">\(c\)</span> that makes <span class="math inline">\(\hat{\psi}\)</span> as close as possible to the target <span class="math inline">\(\psi\)</span>.</p>
 </section>
-<section id="package-installation-and-loading" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="package-installation-and-loading"><span class="header-section-number">5</span> Package installation and loading</h2>
-<p>No other libraries need to be installed to use the <code>mecRecordLinkage</code> package. All functionalities are build in. For preparing data sets and solving fixed equations, <code>reclin2</code> and <code>spuRs</code> packages are used inside of the <code>mecRecordLinkage</code>.</p>
+<section id="supervised-learning" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="supervised-learning"><span class="header-section-number">5</span> Supervised learning</h2>
+<p>For the supervised method we suppose <span class="math inline">\(\operatorname{M}\)</span> observed for given <span class="math inline">\(\operatorname{\Omega}\)</span> and trained classifier is to be applied for the pairs outside of the <span class="math inline">\(\operatorname{\Omega}\)</span>. Algorithm:</p>
+<ol type="1">
+<li>obtain parameters from observed pairs and compute probability ratio <span class="math inline">\(r(\gamma)\)</span> for pairs outside of <span class="math inline">\(\Omega\)</span>.</li>
+<li>Solve following fixed equation so as to find optimal size of objective matching set. <span class="math display">\[
+n_M=\sum_{(a, b) \in \Omega} \hat{g}\left(\gamma_{a b}\right)=\sum_{\gamma \in S} n(\gamma) \hat{g}(\gamma)
+\]</span> where <span class="math display">\[
+\hat{g}(\gamma):=\operatorname{Pr}\left(g_{a b}=1 \mid \gamma_{a b}=\gamma\right)=\frac{\pi r(\gamma)}{\pi(r(\gamma)-1)+1}=\frac{n_M r(\gamma)}{n_M(r(\gamma)-1)+n}
+\]</span></li>
+<li>Obtain <span class="math inline">\(\operatorname{M}\)</span> set by deduplication in the descending order of <span class="math inline">\(r(\gamma)\)</span> such that <span class="math inline">\(|\operatorname{M}| = n_M\)</span>.</li>
+</ol>
+</section>
+<section id="package-installation-and-loading" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="package-installation-and-loading"><span class="header-section-number">6</span> Package installation and loading</h2>
+<p>No other libraries need to be installed to use the <code>mecRecordLinkage</code> package. All functionalities are build in. For preparing data sets and solving fixed equations, <code>reclin2</code> and <code>FixedPoints</code> packages are used inside of the <code>mecRecordLinkage</code>.</p>
 <div class="cell">
 
 </div>
 </section>
-<section id="work-with-example-datasets-and-initial-exploration" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="work-with-example-datasets-and-initial-exploration"><span class="header-section-number">6</span> Work with example datasets and initial exploration</h2>
+<section id="work-with-example-datasets-and-initial-exploration" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="work-with-example-datasets-and-initial-exploration"><span class="header-section-number">7</span> Work with example datasets and initial exploration</h2>
 <p>To perform example of using <code>mec</code> function we can use following data sets. Data are obtained from the <a href="https://github.com/djvanderlaan/tutorial-reclin-uros2021">reclin tutorial</a> and contain columns with the most important attributes such as first name, last name or sex related to a given person (for more see documentation).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example1.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example2.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example1.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example2.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> data1 <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>id)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> data2 <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>id)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  id firstname lastname sex dobday dobmon dobyear postcode
-1  1    AMELIE    ADAMS   1     31      3    1926  SW988AH
-2  2   BRANDON    ADAMS   2     12      3    2005  SW500HZ
-3  3   CLAUDIA    ADAMS   1      6      5    1944   SW75TQ
-4  4 CMARLOTTE    ADAMS   1     21      9    2000  SW500HZ
-5  5    CONNIE    ADAMS   1     27      3    2004  SW212NZ
-6  6     EMILY    ADAMS   1      8     10    2005  SW500HZ</code></pre>
+<pre><code>  firstname lastname sex dobday dobmon dobyear postcode
+1    AMELIE    ADAMS   1     31      3    1926  SW988AH
+2   BRANDON    ADAMS   2     12      3    2005  SW500HZ
+3   CLAUDIA    ADAMS   1      6      5    1944   SW75TQ
+4 CMARLOTTE    ADAMS   1     21      9    2000  SW500HZ
+5    CONNIE    ADAMS   1     27      3    2004  SW212NZ
+6     EMILY    ADAMS   1      8     10    2005  SW500HZ</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    id firstname lastname sex dobday dobmon dobyear postcode
-1 3045    GEORGE   HUGHES   2     19      5    1942  SW122AB
-2 2973     HARRY   WRIGHT   2     19     12    1957  SW122AB
-3 2966     CHLOE   WRIGHT   1     31      2    1955  SW122AB
-4 2983       MAX   WRIGHT   2     13      9    1994  SW122AB
-5 1997      ADAM   PARKER   2     26      1    1923  SW122AB
-6 1998    AMELIE   PARKER   1     13      1    1963  SW122AB</code></pre>
+<pre><code>  firstname lastname sex dobday dobmon dobyear postcode
+1    GEORGE   HUGHES   2     19      5    1942  SW122AB
+2     HARRY   WRIGHT   2     19     12    1957  SW122AB
+3     CHLOE   WRIGHT   1     31      2    1955  SW122AB
+4       MAX   WRIGHT   2     13      9    1994  SW122AB
+5      ADAM   PARKER   2     26      1    1923  SW122AB
+6    AMELIE   PARKER   1     13      1    1963  SW122AB</code></pre>
 </div>
 </div>
 </section>
-<section id="unsupervised-learning-using-mec-function" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="unsupervised-learning-using-mec-function"><span class="header-section-number">7</span> Unsupervised learning using <code>mec</code> function</h2>
+<section id="unsupervised-learning-using-mec-function" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="unsupervised-learning-using-mec-function"><span class="header-section-number">8</span> Unsupervised learning using <code>mec</code> function</h2>
 <p><code>mec</code> Function enables the application of an unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is a strata.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;firstname&quot;</span>, <span class="st">&quot;lastname&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;dobday&quot;</span>, <span class="st">&quot;dobmon&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s look at the list of the model parameters.</p>
+<p>Let’s look at the model parameters.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>theta <span class="co"># for m-probability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>firstname  lastname       sex    dobday    dobmon 
-0.8890975 0.8978320 0.9913638 0.9946392 0.9778981 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>eta <span class="co"># for u-probability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> firstname   lastname        sex     dobday     dobmon 
-0.02312626 0.02904046 0.50508715 0.05423435 0.10338935 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>matching_prob <span class="co"># Expected value of being in the M set</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02143884</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>class_entropy <span class="co"># value of the entropy function for the final result</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 11.47321</code></pre>
+<pre><code>   firstname   lastname       sex     dobday    dobmon
+m 0.88909752 0.89783201 0.9913638 0.99463919 0.9778981
+u 0.02312626 0.02904046 0.5050872 0.05423435 0.1033894</code></pre>
 </div>
 </div>
 <p>Set of matching pairs.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2784,8 +2789,8 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 <p>Depending on the estimation method, results can be different. You can define the method with the <code>control</code> parameters.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">control =</span> <span class="fu">control_mec</span>(<span class="at">theta_est =</span> <span class="st">&quot;2&quot;</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>model2<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">control =</span> <span class="fu">control_mec</span>(<span class="at">theta_est =</span> <span class="st">&quot;2&quot;</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model2<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2807,11 +2812,11 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 </section>
-<section id="guiding-the-algorithm-by-the-error-rates" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="guiding-the-algorithm-by-the-error-rates"><span class="header-section-number">8</span> Guiding the algorithm by the error rates</h2>
+<section id="guiding-the-algorithm-by-the-error-rates" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="guiding-the-algorithm-by-the-error-rates"><span class="header-section-number">9</span> Guiding the algorithm by the error rates</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_ER1 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>model_ER1<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model_ER1 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model_ER1<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2833,9 +2838,9 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_ER2 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">control =</span> <span class="fu">control_mec</span>(<span class="at">theta_est =</span> <span class="st">&quot;2&quot;</span>, <span class="at">increase_rate =</span> .<span class="dv">6</span>), <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>model_ER2<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_ER2 <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1, <span class="at">B =</span> data2, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">control =</span> <span class="fu">control_mec</span>(<span class="at">theta_est =</span> <span class="st">&quot;2&quot;</span>, <span class="at">increase_rate =</span> .<span class="dv">6</span>), <span class="at">error_rate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model_ER2<span class="sc">$</span>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2857,24 +2862,24 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 </div>
 </section>
-<section id="other-packages-for-record-linkage" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="other-packages-for-record-linkage"><span class="header-section-number">9</span> Other packages for record linkage</h2>
+<section id="other-packages-for-record-linkage" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="other-packages-for-record-linkage"><span class="header-section-number">10</span> Other packages for record linkage</h2>
 <p>Let’s compare it to the results for the <code>reclin2</code> package, where <code>EM</code> algorithm is implemented.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1, data2, <span class="at">on =</span> <span class="st">&quot;dobyear&quot;</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(pairs, <span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>lastname <span class="sc">+</span> firstname <span class="sc">+</span> </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                            sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(pairs, <span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">threshold =</span> <span class="dv">8</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(pairs, <span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>, </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">threshold =</span> <span class="dv">0</span>)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>linked_data <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">link</span>(pairs, <span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>threshold <span class="sc">==</span> <span class="cn">TRUE</span>, ], <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1, data2, <span class="at">on =</span> <span class="st">&quot;dobyear&quot;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(pairs, <span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>lastname <span class="sc">+</span> firstname <span class="sc">+</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                            sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(pairs, <span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">threshold =</span> <span class="dv">8</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(pairs, <span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>, </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                                <span class="at">threshold =</span> <span class="dv">0</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>linked_data <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">link</span>(pairs, <span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>threshold <span class="sc">==</span> <span class="cn">TRUE</span>, ], <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2894,7 +2899,7 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 2747: 2977 1498      TRUE     TRUE TRUE   TRUE   TRUE
 2748: 3023 1203      TRUE     TRUE TRUE   TRUE   TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>ntom <span class="sc">==</span> <span class="cn">TRUE</span>, ],  <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pairs[pairs<span class="sc">$</span>ntom <span class="sc">==</span> <span class="cn">TRUE</span>, ],  <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(weights, threshold, ntom))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  First data set:  3 044 records
   Second data set: 3 448 records
@@ -2917,96 +2922,74 @@ r_{a b}=\frac{m\left(\gamma\right)}{u\left(\gamma\right)}
 </div>
 <p>Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.</p>
 </section>
-<section id="supervised-learning-using-mecsup-function" class="level2" data-number="10">
-<h2 data-number="10" class="anchored" data-anchor-id="supervised-learning-using-mecsup-function"><span class="header-section-number">10</span> Supervised learning using <code>mecSup</code> function</h2>
+<section id="supervised-learning-using-mecsup-function" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="supervised-learning-using-mecsup-function"><span class="header-section-number">11</span> Supervised learning using <code>mecSup</code> function</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="at">n =</span> <span class="fu">nrow</span>(data1)<span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data1_test <span class="ot">&lt;-</span> data1[idx1, ]</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>data1_train <span class="ot">&lt;-</span> data1[<span class="sc">-</span>idx1, ]</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>idx2 <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="at">n =</span> <span class="fu">nrow</span>(data2)<span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>data2_test <span class="ot">&lt;-</span> data2[idx2, ]</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>data2_train <span class="ot">&lt;-</span> data2[<span class="sc">-</span>idx2, ]</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;firstname&quot;</span>, <span class="st">&quot;lastname&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;dobday&quot;</span>, <span class="st">&quot;dobmon&quot;</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>Omega <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">mec</span>(<span class="at">A =</span> data1_train, <span class="at">B =</span> data2_train, <span class="at">vars =</span> vars,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>)<span class="sc">$</span>to_link, <span class="at">select =</span> <span class="fu">c</span>(<span class="sc">-</span>.x, <span class="sc">-</span>.y, <span class="sc">-</span>r))</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> Omega <span class="sc">%&gt;%</span> <span class="fu">select</span>(selected)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>Omega <span class="ot">&lt;-</span> Omega <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>selected)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">mecSup</span>(<span class="at">A =</span> data1_test, <span class="at">B =</span> data2_test, <span class="at">Omega =</span> Omega,</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">g =</span> g, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">prob_ratio =</span> <span class="st">&quot;1&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>At iteration 1 value of x is: 24.84579 
-At iteration 2 value of x is: 25.01454 
-At iteration 3 value of x is: 25.02016 
-At iteration 4 value of x is: 25.02034 
-At iteration 5 value of x is: 25.02035 
-At iteration 6 value of x is: 25.02035 
-At iteration 7 value of x is: 25.02035 
-At iteration 8 value of x is: 25.02035 
-Algorithm converged</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">mecSup</span>(<span class="at">A =</span> data1_test, <span class="at">B =</span> data2_test, <span class="at">Omega =</span> Omega,</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">g =</span> g, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">prob_ratio =</span> <span class="st">&quot;2&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>At iteration 1 value of x is: 24.13582 
-At iteration 2 value of x is: 24.22975 
-At iteration 3 value of x is: 24.23175 
-At iteration 4 value of x is: 24.23179 
-At iteration 5 value of x is: 24.23179 
-At iteration 6 value of x is: 24.23179 
-At iteration 7 value of x is: 24.23179 
-Algorithm converged</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1_test, data2_test, <span class="at">on =</span><span class="st">&quot;dobyear&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(<span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>firstname <span class="sc">+</span> lastname <span class="sc">+</span> sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>model_recc <span class="ot">&lt;-</span> pairs <span class="sc">|&gt;</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(<span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, <span class="at">threshold =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(<span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>,  <span class="at">threshold =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ntom <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>model_rec <span class="ot">&lt;-</span> model_recc <span class="sc">%&gt;%</span> reclin2<span class="sc">::</span><span class="fu">link</span>(<span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)  <span class="sc">|&gt;</span></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(test1<span class="sc">$</span>linked_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 25</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(test2<span class="sc">$</span>linked_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 24</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(model_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 29</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="at">n =</span> <span class="fu">nrow</span>(data1)<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>data1_test <span class="ot">&lt;-</span> data1[idx1, ]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>data1_train <span class="ot">&lt;-</span> data1[<span class="sc">-</span>idx1, ]</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>idx2 <span class="ot">&lt;-</span> <span class="fu">sample.int</span>(<span class="at">n =</span> <span class="fu">nrow</span>(data2)<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>data2_test <span class="ot">&lt;-</span> data2[idx2, ]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>data2_train <span class="ot">&lt;-</span> data2[<span class="sc">-</span>idx2, ]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;firstname&quot;</span>, <span class="st">&quot;lastname&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;dobday&quot;</span>, <span class="st">&quot;dobmon&quot;</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">mec</span>(<span class="at">A =</span> data1_train, <span class="at">B =</span> data2_train, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> model<span class="sc">$</span>M</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> model<span class="sc">$</span>U</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>Omega <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">rbind</span>(M, U), <span class="at">select =</span> <span class="fu">c</span>(<span class="sc">-</span>.x, <span class="sc">-</span>.y, <span class="sc">-</span>r))</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> Omega <span class="sc">%&gt;%</span> <span class="fu">select</span>(selected)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>Omega <span class="ot">&lt;-</span> Omega <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>selected)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">mecSup</span>(<span class="at">A =</span> data1_test, <span class="at">B =</span> data2_test, <span class="at">Omega =</span> Omega,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">g =</span> g, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">prob_ratio =</span> <span class="st">&quot;1&quot;</span>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">mecSup</span>(<span class="at">A =</span> data1_test, <span class="at">B =</span> data2_test, <span class="at">Omega =</span> Omega,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">g =</span> g, <span class="at">vars =</span> vars, <span class="at">blockvars =</span> <span class="st">&quot;dobyear&quot;</span>, <span class="at">prob_ratio =</span> <span class="st">&quot;2&quot;</span>)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1_test, data2_test, <span class="at">on =</span><span class="st">&quot;dobyear&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(<span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">problink_em</span>(<span class="sc">~</span>firstname <span class="sc">+</span> lastname <span class="sc">+</span> sex <span class="sc">+</span> dobday <span class="sc">+</span> dobmon, <span class="at">data =</span> pairs)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="at">pairs =</span> pairs, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>model_recc <span class="ot">&lt;-</span> pairs <span class="sc">|&gt;</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">select_threshold</span>(<span class="st">&quot;threshold&quot;</span>, <span class="at">score =</span> <span class="st">&quot;weights&quot;</span>, <span class="at">threshold =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">select_n_to_m</span>(<span class="st">&quot;weights&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;ntom&quot;</span>,  <span class="at">threshold =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ntom <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>model_rec <span class="ot">&lt;-</span> model_recc <span class="sc">%&gt;%</span> reclin2<span class="sc">::</span><span class="fu">link</span>(<span class="at">selection =</span> <span class="st">&quot;ntom&quot;</span>, <span class="at">all =</span> <span class="cn">FALSE</span>)  <span class="sc">|&gt;</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>mec1 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(test1<span class="sc">$</span>linked_data)</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>mec2 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(test2<span class="sc">$</span>linked_data)</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>rec <span class="ot">&lt;-</span> <span class="fu">nrow</span>(model_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="classification-by-logistic-regression" class="level2" data-number="11">
-<h2 data-number="11" class="anchored" data-anchor-id="classification-by-logistic-regression"><span class="header-section-number">11</span> Classification by logistic regression</h2>
+<section id="classification-by-logistic-regression" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="classification-by-logistic-regression"><span class="header-section-number">12</span> Classification by logistic regression</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1_test, data2_test, <span class="at">on =</span><span class="st">&quot;dobyear&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(<span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>pairs[<span class="fu">is.na</span>(pairs)] <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Omega, <span class="at">g =</span> g<span class="sc">$</span>selected)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> pairs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(<span class="sc">-</span>.x, <span class="sc">-</span>.y))</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>model_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(g <span class="sc">~</span> ., <span class="at">data =</span> train_data, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_glm, test_data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">na.omit</span>(prob[prob <span class="sc">&gt;</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> reclin2<span class="sc">::</span><span class="fu">pair_blocking</span>(data1_test, data2_test, <span class="at">on =</span><span class="st">&quot;dobyear&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  reclin2<span class="sc">::</span><span class="fu">compare_pairs</span>(<span class="at">on =</span> vars, <span class="at">inplace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>pairs[<span class="fu">is.na</span>(pairs)] <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Omega, <span class="at">g =</span> g<span class="sc">$</span>selected)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> pairs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(<span class="sc">-</span>.x, <span class="sc">-</span>.y))</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>model_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(g <span class="sc">~</span> ., <span class="at">data =</span> train_data, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_glm, test_data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>glm <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">na.omit</span>(prob[prob <span class="sc">&gt;</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>]))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Size of the final set by each method</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">Mec1 =</span> mec1, <span class="at">Mec2 =</span> mec2, <span class="at">reclin2 =</span> rec, <span class="at">glm =</span> glm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 24</code></pre>
+<pre><code>  Mec1 Mec2 reclin2 glm
+1    1    1      29  24</code></pre>
 </div>
 </div>
 </section>

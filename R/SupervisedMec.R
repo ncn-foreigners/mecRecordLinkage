@@ -88,7 +88,7 @@ mecSup <- function(A,
 
   # Application to the target pairs
   #nM_sup <- sum(pi*r_class/(pi * (r_class - 1) + 1) * gamma$n)
-  nM_start <- sum(ifelse(apply(pairs, 1, sum) == K, 1, 0))
+  nM_start <- sum(ifelse(apply(subset(pairs, select = vars), 1, sum) == K, 1, 0))
   fun <- fixed_nM(n_gamma = gamma$n, r_gamma = r_class, n = n_pairs)
   #nM_sup <- spuRs::fixedpoint(ftn = fun, x0 = nM_start)
   nM_sup <- FixedPoint::FixedPoint(Function = fun, Inputs = nM_start, Method = fixed_method)$FixedPoint

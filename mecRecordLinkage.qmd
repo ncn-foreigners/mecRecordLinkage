@@ -93,8 +93,8 @@ No other libraries need to be installed to use the `mecRecordLinkage` package. A
 
 ```{r setup, echo=FALSE}
 #devtools::load_all()
-remotes::install_github("ncn-foreigners/mecRecordLinkage")
-library(mecRecordLinkage)
+#remotes::install_github("ncn-foreigners/mecRecordLinkage")
+#library(mecRecordLinkage)
 ```
 
 ## Work with example datasets and initial exploration
@@ -120,12 +120,10 @@ vars <- c("firstname", "lastname", "sex", "dobday", "dobmon")
 model <- mec(A = data1, B = data2, vars = vars, blockvars = "dobyear")
 ```
 
-Let's look at the list of the model parameters.
+Let's look at the model parameters.
 
 ```{r}
 model$params
-model$matched_ratio # Expected value of being in the M set
-model$class_entropy # value of the entropy function for the final result
 ```
 
 Set of matching pairs.

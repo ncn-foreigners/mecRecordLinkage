@@ -22,7 +22,7 @@ library:
 
 The goal of the main functions available in the package is to link data sets using maximum entropy classifier. Combining different sources of data is widely using step in a data analysis. Many various techniques have been considering during the years so as to link the records basing on a comparison vectors and m- and u- probabilities estimation. The most useful is probabilistic record linkage derived by `Fellegi and Sunter`, where parameters are estimated using `EM` algorithm (`Winkler`) (see `reclin2` package). One can use also machine learning methods, where process of matching pairs of records into match and non-match sets is considering as a classification problem. You can use `glm` with `binomial` or `xgboost` functions to classify the pairs using machine learning. In our setting, pairs matching is a classification problem as well, but matching process is more automated in comparison to the probabilistic method. MEC technique was proposed by [D. Lee, L. C. Zhang and J. K. Kim. Maximum entropy classification for record linkage (2022)](https://arxiv.org/abs/2009.14797). Authors derive supervised and unsupervised methods with full set parameters estimation techniques. `mecRecordLinkage` package contains direct implementation of the proposed algorithms. First we make an introduction to technical details, then show how to use package properly and finally compare the results with the `reclin2` package.
 
-##Technical details
+## Technical details
 
 With record linkage we are trying to link two or more data sets using many common entities. The goal is to find the true matches among all possible pairs of the two data files. For this purposes we create so called `comparison space` $\Omega=A \times B=M \cup U$ consist of matches M and non-matches U between the record in given files. First of all we want to estimate probability ratio
 
@@ -249,4 +249,3 @@ data.frame(Mec1 = mec1, Mec2 = mec2, reclin2 = rec, glm = glm)
 ```
 
 Work on this package is supported by the the National Science Center, OPUS 22 grant no. 2020/39/B/HS4/00941.
-

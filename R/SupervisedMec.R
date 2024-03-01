@@ -49,7 +49,7 @@ mecSup <- function(A,
   n_pairs <- nrow(pairs)
   K <- length(vars)
 
-  #supervised
+  # supervised
   u_loc <- which(g == 0)
   m_loc <- which(g == 1)
   M <- Omega[m_loc, ]

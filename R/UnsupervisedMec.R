@@ -42,7 +42,7 @@ mec <- function(A,
   if(is.null(blockvars)) {
     pairs <- reclin2::pair(A, B, deduplication = control$deduplication, add_xy = control$add_xy)
     reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
-    }  else {
+    } else {
     pairs <- reclin2::pair_blocking(A, B, on = blockvars, deduplication = control$deduplication, add_xy = control$add_xy)
     reclin2::compare_pairs(pairs, on = vars, comparators = string_comparator, inplace = TRUE)
     }

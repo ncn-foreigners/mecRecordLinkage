@@ -162,10 +162,12 @@ mec <- function(A,
   linked_data <- reclin2::link(subset(to_link, select = c(-r)), selection = "selected", all = all)
   params <- t(data.frame(m = theta, u = eta))
 
-  list(params = params,
+  structure(
+    list(params = params,
        matched_ratio = matching_prob,
        max_class_entropy = max_class_entropy,
        M = M,
        U = U,
-       linked_data = linked_data)
+       linked_data = linked_data),
+    class = "MecRecordLinkage")
 }

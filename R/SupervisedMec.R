@@ -114,10 +114,12 @@ mecSup <- function(A,
   matching_prob <- nM_sup/n_pairs
   params <- t(data.frame(m = theta, u = eta))
 
-  list(params = params,
+  structure(
+    list(params = params,
        matched_ratio = matching_prob,
        max_class_entropy = max_class_entropy,
        M = M,
        U = U,
-       linked_data = linked_data)
+       linked_data = linked_data),
+    class = "MecRecordLinkage")
 }

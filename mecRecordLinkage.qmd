@@ -108,7 +108,7 @@ head(data1)
 head(data2)
 ```
 
-## The `mec` function for unsupervised learning
+## `mec` function for unsupervised learning
 
 `mec` Function enables the application of an unsupervised learning. In the first case we link data sets on given variables assuming that year of birthday given person is a strata.
 
@@ -174,7 +174,7 @@ subset(pairs[pairs$ntom == TRUE, ],  select = -c(weights, threshold, ntom))
 
 Notice that this method requires the user to select a threshold, while with the maximal MEC there is no need to define that, what makes this method more automated.
 
-## The `mecSup` function for supervised learning 
+## `mecSup` function for supervised learning
 
 ```{r}
 
@@ -247,3 +247,6 @@ glm <- length(na.omit(prob[prob > 1/2]))
 # Size of the final set by each method
 data.frame(Mec1 = mec1, Mec2 = mec2, reclin2 = rec, glm = glm)
 ```
+
+Work on this package is supported by the the National Science Center, OPUS 22 grant no. 2020/39/B/HS4/00941.
+

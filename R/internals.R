@@ -1,16 +1,13 @@
-# Internals function
+# Internal functions
 
 error_rate <- function(nM, g) {
-
   flr <- 1/nM * sum(1 - g)
   mmr <- 1 - sum(g/nM)
-
   list(flr = flr,
        mmr = mmr)
 }
 
-nMformula <- function(gamma, pi = NULL, r_gamma, n, nM) {
-
+nMformula <- function(gamma, r_gamma, n, nM, pi = NULL) {
   n_gamma <- gamma$n
   g_gamma <- sapply(nM*r_gamma/(nM * (r_gamma - 1) + n), function(x) min(c(x, 1)))
   sum(n_gamma*g_gamma)
@@ -23,20 +20,16 @@ fixed_nM <- function(n_gamma, n, r_gamma){
 }
 
 params_formula <- function(set, n) {
-
   par <- 1/n * apply(set, 2, sum)
   par
 }
 
 params_formula_theta <- function(set, nM, g_gamma) {
-
   #par <- 1/nM * t(as.matrix(g_gamma)) %*% as.matrix(set)
   par <- 1/nM * apply(set, 2, function(x) sum(g_gamma * x))
   names(par) <- names(set)
   par
 }
-
-#params_formula_eta <- function(pi, nA, nB, )
 
 class_entropy <- function(nM, r_gamma) {
   1/nM * sum(log(r_gamma))
@@ -51,7 +44,7 @@ gamma_formula <- function(par, subpairs){
   apply(subpairs, 1, function(x) prod(par^x * (1 - par)^(1-x)))
 }
 
-mlee <- function(nM, n, A, B, M, u, Omega){
+mlee <- function(nM, n, A, B, M, u, Omega){ # TODO
 
   if (nA > nB) {
     C <- B
@@ -85,7 +78,7 @@ mlee <- function(nM, n, A, B, M, u, Omega){
   }
 
 
-  mle2 <- function(B, p, deltaB){ # EM algorithm here
+  mle2 <- function(B, p, deltaB){ # TODO EM algorithm here
     mB <- apply(B, 2, table)
     uB <- apply(B, 2, table)
     function(x){
